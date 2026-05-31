@@ -98,20 +98,24 @@ export default function TestCaseForm({ onSubmit, onCancel, initialData, testCase
     }
   };
 
-  const inputClass = "w-full px-3 py-2 rounded-lg border border-gray-700 bg-gray-800 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-500";
-  const labelClass = "text-sm font-medium text-gray-300";
+  const inputClass = "w-full px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2";
+  const inputStyle = { background: 'var(--color-surface-alt)', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)' };
+  const labelClass = "text-sm font-medium";
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between border-b border-gray-700 pb-4">
-        <h2 className="text-lg font-bold text-white flex items-center gap-2">
+      <div className="flex items-center justify-between pb-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
+        <h2 className="text-lg font-bold flex items-center gap-2" style={{ color: 'var(--color-text-primary)' }}>
           {initialData ? 'Edit Test Case' : 'New Test Case'}
           {!initialData && formData.testId && (
-            <span className="text-xs bg-indigo-900/40 text-indigo-300 px-2 py-0.5 rounded-full font-mono">{formData.testId}</span>
+            <span className="text-xs px-2 py-0.5 rounded-full font-mono" style={{ background: 'var(--color-primary-subtle)', color: 'var(--color-primary)' }}>{formData.testId}</span>
           )}
         </h2>
         {onCancel && (
-          <button type="button" onClick={onCancel} className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 rounded-lg transition">
+          <button type="button" onClick={onCancel} className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition"
+            style={{ background: 'var(--color-surface-alt)', border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}
+            onMouseEnter={e => e.currentTarget.style.background = 'var(--color-border)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'var(--color-surface-alt)'}>
             <ArrowLeft className="w-4 h-4" /> Back
           </button>
         )}
@@ -120,56 +124,56 @@ export default function TestCaseForm({ onSubmit, onCancel, initialData, testCase
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className={labelClass}>Test ID</label>
-            <input type="text" name="testId" value={formData.testId} onChange={handleChange} className={inputClass + ' font-mono'} placeholder="Auto-generated" />
+            <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Test ID</label>
+            <input type="text" name="testId" value={formData.testId} onChange={handleChange} className={inputClass + ' font-mono'} style={inputStyle} placeholder="Auto-generated" />
           </div>
           <div>
-            <label className={labelClass}>Module</label>
-            <input type="text" name="module" value={formData.module} onChange={handleChange} className={inputClass} placeholder="e.g. Login" />
+            <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Module</label>
+            <input type="text" name="module" value={formData.module} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="e.g. Login" />
           </div>
           <div>
-            <label className={labelClass}>Title</label>
-            <input type="text" name="title" value={formData.title} onChange={handleChange} className={inputClass} placeholder="Test case title" />
+            <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Title</label>
+            <input type="text" name="title" value={formData.title} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="Test case title" />
           </div>
         </div>
 
         <div>
-          <label className={labelClass}>Execution Steps</label>
+          <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Execution Steps</label>
           <div className="space-y-2 mt-1">
             {formData.steps.map((step, idx) => (
               <div key={idx} className="flex items-center gap-2">
-                <span className="text-xs font-mono text-gray-500 w-6 shrink-0">{idx + 1}.</span>
+                <span className="text-xs font-mono w-6 shrink-0" style={{ color: 'var(--color-text-muted)' }}>{idx + 1}.</span>
                 <input type="text" value={step} onChange={e => handleArrayChange('steps', idx, e.target.value)}
-                  className={inputClass} placeholder={`Step ${idx + 1}`} />
+                  className={inputClass} style={inputStyle} placeholder={`Step ${idx + 1}`} />
                 {formData.steps.length > 1 && (
-                  <button type="button" onClick={() => handleRemoveItem('steps', idx)} className="p-1.5 text-gray-500 hover:text-red-400">
+                  <button type="button" onClick={() => handleRemoveItem('steps', idx)} className="p-1.5" style={{ color: 'var(--color-text-muted)' }}>
                     <Trash2 size={14} />
                   </button>
                 )}
               </div>
             ))}
-            <button type="button" onClick={() => handleAddItem('steps')} className="flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300">
+            <button type="button" onClick={() => handleAddItem('steps')} className="flex items-center gap-1 text-xs" style={{ color: 'var(--color-primary)' }}>
               <Plus size={14} /> Add Step
             </button>
           </div>
         </div>
 
         <div>
-          <label className={labelClass}>Test Data</label>
+          <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Test Data</label>
           <div className="space-y-2 mt-1">
             {formData.testData.map((d, idx) => (
               <div key={idx} className="flex items-center gap-2">
-                <span className="text-xs font-mono text-gray-500 w-6 shrink-0">{idx + 1}.</span>
+                <span className="text-xs font-mono w-6 shrink-0" style={{ color: 'var(--color-text-muted)' }}>{idx + 1}.</span>
                 <input type="text" value={d} onChange={e => handleArrayChange('testData', idx, e.target.value)}
-                  className={inputClass} placeholder={`Data ${idx + 1}`} />
+                  className={inputClass} style={inputStyle} placeholder={`Data ${idx + 1}`} />
                 {formData.testData.length > 1 && (
-                  <button type="button" onClick={() => handleRemoveItem('testData', idx)} className="p-1.5 text-gray-500 hover:text-red-400">
+                  <button type="button" onClick={() => handleRemoveItem('testData', idx)} className="p-1.5" style={{ color: 'var(--color-text-muted)' }}>
                     <Trash2 size={14} />
                   </button>
                 )}
               </div>
             ))}
-            <button type="button" onClick={() => handleAddItem('testData')} className="flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300">
+            <button type="button" onClick={() => handleAddItem('testData')} className="flex items-center gap-1 text-xs" style={{ color: 'var(--color-primary)' }}>
               <Plus size={14} /> Add Data Point
             </button>
           </div>
@@ -177,30 +181,30 @@ export default function TestCaseForm({ onSubmit, onCancel, initialData, testCase
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className={labelClass}>Bug Ticket Link</label>
-            <input type="text" name="bugLink" value={formData.bugLink} onChange={handleChange} placeholder="e.g. PROJ-102" className={inputClass} />
+            <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Bug Ticket Link</label>
+            <input type="text" name="bugLink" value={formData.bugLink} onChange={handleChange} placeholder="e.g. PROJ-102" className={inputClass} style={inputStyle} />
           </div>
           <div>
-            <label className={labelClass}>Execution Date</label>
-            <input type="date" name="date" value={formData.date} onChange={handleChange} className={inputClass} />
+            <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Execution Date</label>
+            <input type="date" name="date" value={formData.date} onChange={handleChange} className={inputClass} style={inputStyle} />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className={labelClass}>Expected Result</label>
-            <textarea name="expectedResult" value={formData.expectedResult} onChange={handleChange} rows={3} className={inputClass} />
+            <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Expected Result</label>
+            <textarea name="expectedResult" value={formData.expectedResult} onChange={handleChange} rows={3} className={inputClass} style={inputStyle} />
           </div>
           <div>
-            <label className={labelClass}>Actual Result</label>
-            <textarea name="actualResult" value={formData.actualResult} onChange={handleChange} rows={3} className={inputClass} />
+            <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Actual Result</label>
+            <textarea name="actualResult" value={formData.actualResult} onChange={handleChange} rows={3} className={inputClass} style={inputStyle} />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className={labelClass}>Status</label>
-            <select name="status" value={formData.status} onChange={handleChange} className={inputClass}>
+            <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Status</label>
+            <select name="status" value={formData.status} onChange={handleChange} className={inputClass} style={inputStyle}>
               <option value="Untested">Untested</option>
               <option value="Pass">Pass</option>
               <option value="Fail">Fail</option>
@@ -208,8 +212,8 @@ export default function TestCaseForm({ onSubmit, onCancel, initialData, testCase
             </select>
           </div>
           <div>
-            <label className={labelClass}>Priority</label>
-            <select name="priority" value={formData.priority} onChange={handleChange} className={inputClass}>
+            <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Priority</label>
+            <select name="priority" value={formData.priority} onChange={handleChange} className={inputClass} style={inputStyle}>
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
               <option value="High">High</option>
@@ -217,8 +221,8 @@ export default function TestCaseForm({ onSubmit, onCancel, initialData, testCase
             </select>
           </div>
           <div>
-            <label className={labelClass}>Severity</label>
-            <select name="severity" value={formData.severity} onChange={handleChange} className={inputClass}>
+            <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Severity</label>
+            <select name="severity" value={formData.severity} onChange={handleChange} className={inputClass} style={inputStyle}>
               <option value="Low">Low</option>
               <option value="Minor">Minor</option>
               <option value="Major">Major</option>
@@ -228,20 +232,23 @@ export default function TestCaseForm({ onSubmit, onCancel, initialData, testCase
         </div>
 
         <div>
-          <label className={labelClass}>Screenshot (optional)</label>
-          <input type="file" accept="image/*" onChange={handleImageUpload} className="mt-1 text-sm text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-700" />
+          <label className={labelClass} style={{ color: 'var(--color-text-secondary)' }}>Screenshot (optional)</label>
+          <input type="file" accept="image/*" onChange={handleImageUpload} className="mt-1 text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-700" style={{ color: 'var(--color-text-muted)' }} />
           {formData.screenshot && (
             <div className="mt-2 relative inline-block">
-              <img src={formData.screenshot} alt="Preview" className="h-20 rounded border border-gray-700" />
+              <img src={formData.screenshot} alt="Preview" className="h-20 rounded" style={{ border: '1px solid var(--color-border)' }} />
               <button type="button" onClick={() => setFormData(prev => ({ ...prev, screenshot: null }))}
                 className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center text-xs">X</button>
             </div>
           )}
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-700">
+        <div className="flex items-center justify-end gap-3 pt-4" style={{ borderTop: '1px solid var(--color-border)' }}>
           {onCancel && (
-            <button type="button" onClick={onCancel} className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white bg-gray-800 hover:bg-gray-700 rounded-lg transition">Cancel</button>
+            <button type="button" onClick={onCancel} className="px-4 py-2 text-sm font-medium rounded-lg transition"
+              style={{ background: 'var(--color-surface-alt)', border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-text-primary)'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'var(--color-surface-alt)'; e.currentTarget.style.color = 'var(--color-text-secondary)'; }}>Cancel</button>
           )}
           <button type="submit" disabled={isSubmitting}
             className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium flex items-center gap-2 hover:bg-indigo-700 transition disabled:opacity-50">

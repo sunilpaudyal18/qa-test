@@ -24,12 +24,16 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' })
         initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
-        className={`bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full ${sizes[size]} max-h-[90vh] flex flex-col border border-gray-200 dark:border-gray-700`}
+        className={`rounded-xl shadow-2xl w-full ${sizes[size]} max-h-[90vh] flex flex-col`}
+        style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h2>
-          <button onClick={onClose} className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500">
+        <div className="flex items-center justify-between px-6 py-4"
+          style={{ borderBottom: '1px solid var(--color-border)' }}>
+          <h2 className="text-lg font-semibold" style={{ color: 'var(--color-text-primary)' }}>{title}</h2>
+          <button onClick={onClose} className="p-1 rounded-lg transition-colors" style={{ color: 'var(--color-text-muted)' }}
+            onMouseEnter={e => e.currentTarget.style.background = 'var(--color-surface-alt)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
             <X size={20} />
           </button>
         </div>
