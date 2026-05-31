@@ -61,9 +61,15 @@ export default function ImportExport() {
     try {
       const result = await importFromExcel(file);
       setImportResult(result);
-      toast.success(`Imported ${result.success} test cases`);
+      if (result.success) {
+        toast.success(`Imported ${result.count} test cases`);
+        projectService.getAll().then(setProjects);
+      } else {
+        toast.error('Import failed: ' + (result.error || 'Unknown error'));
+      }
     } catch (err) {
-      toast.error('Import failed: ' + err.message);
+      toast.error('Import error: ' + err.message);
+      setImportResult({ success: false, error: err.message });
     }
     setLoading(false);
     e.target.value = '';
@@ -72,138 +78,98 @@ export default function ImportExport() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">Import / Export</h1>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Import and export test cases via Excel</p>
+        <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Import / Export</h1>
+        <p className="text-sm mt-1 mb-6" style={{ color: 'var(--color-text-secondary)' }}>Export test cases to Excel or import from Excel files</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          className="rounded-xl p-6"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600">
-              <Download size={20} />
+            <div className="p-2 rounded-lg" style={{ background: 'var(--color-primary-subtle)' }}>
+              <Download size={20} style={{ color: 'var(--color-primary)' }} />
             </div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Export Test Cases</h2>
-          </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Export test cases to Excel (.xlsx) format</p>
-
-          <div className="space-y-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by Project (optional)</label>
-              <select
-                value={selectedProject}
-                onChange={e => loadProjectData(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-gray-200"
-              >
+              <h2 className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>Export to Excel</h2>
+              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Download test cases as a formatted spreadsheet</p>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <button onClick={handleExportAll}
+              className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors"
+              style={{ background: 'var(--color-surface-alt)', color: 'var(--color-text-primary)' }}>
+              <span>Export All Test Cases</span>
+              <Download size={14} style={{ color: 'var(--color-text-muted)' }} />
+            </button>
+            <div className="flex gap-2">
+              <select value={selectedProject} onChange={e => loadProjectData(e.target.value)}
+                className="flex-1 px-3 py-2 rounded-lg text-sm focus:outline-none"
+                style={{ background: 'var(--color-surface-alt)', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)' }}>
                 <option value="">All Projects</option>
                 {projects.map(p => <option key={p.name} value={p.name}>{p.name}</option>)}
               </select>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <button onClick={handleExportAll} className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                Export All
-              </button>
-              <button onClick={handleExportProject} disabled={!selectedProject} className="px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors disabled:opacity-50">
-                Export Project
-              </button>
-              <button onClick={handleExportFiltered} className="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
-                Export Filtered ({selectedTCs.length})
+              <button onClick={handleExportProject} disabled={!selectedProject}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors disabled:opacity-40"
+                style={{ background: 'var(--color-primary)' }}>
+                Export
               </button>
             </div>
+            {selectedTCs.length > 0 && selectedProject && (
+              <button onClick={handleExportFiltered}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors"
+                style={{ background: 'var(--color-surface-alt)', color: 'var(--color-text-primary)' }}>
+                <span>Export Filtered ({selectedTCs.length} cases)</span>
+                <Download size={14} style={{ color: 'var(--color-text-muted)' }} />
+              </button>
+            )}
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+          className="rounded-xl p-6"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600">
-              <Upload size={20} />
+            <div className="p-2 rounded-lg" style={{ background: 'rgba(22,163,74,0.1)' }}>
+              <Upload size={20} style={{ color: 'var(--color-pass)' }} />
             </div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Import Test Cases</h2>
+            <div>
+              <h2 className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>Import from Excel</h2>
+              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Upload an Excel file to import test cases</p>
+            </div>
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Import test cases from an Excel (.xlsx) file</p>
-
           <div
-            onClick={() => importRef.current?.click()}
-            className="border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-xl p-8 text-center cursor-pointer hover:border-indigo-400 dark:hover:border-indigo-500 transition-colors"
-          >
-            <input ref={importRef} type="file" accept=".xlsx,.xls" onChange={handleImport} className="hidden" />
-            <FileSpreadsheet size={40} className="mx-auto text-gray-300 dark:text-gray-600 mb-3" />
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Click to upload Excel file</p>
-            <p className="text-xs text-gray-500 mt-1">Supports .xlsx files with TC ID, Title, Status, and more</p>
+            className="rounded-xl border-2 border-dashed p-8 text-center cursor-pointer transition-colors"
+            style={{ borderColor: 'var(--color-border)', background: 'var(--color-surface-alt)' }}
+            onClick={() => importRef.current?.click()}>
+            <input ref={importRef} type="file" accept=".xlsx,.xls" onChange={handleImport} hidden />
+            <FileSpreadsheet size={36} className="mx-auto mb-3" style={{ color: 'var(--color-text-muted)' }} />
+            <p className="text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>
+              {loading ? 'Importing...' : 'Click to upload or drag and drop'}
+            </p>
+            <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>.xlsx or .xls files</p>
           </div>
-
-          {loading && (
-            <div className="flex items-center gap-2 mt-4 text-sm text-indigo-600">
-              <div className="w-4 h-4 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-              Importing...
+          {importResult && (
+            <div className={`mt-4 p-3 rounded-lg text-sm flex items-center gap-2 ${
+              importResult.success ? 'text-pass' : 'text-fail'
+            }`} style={{
+              background: importResult.success ? 'rgba(22,163,74,0.1)' : 'rgba(220,38,38,0.1)',
+              color: importResult.success ? 'var(--color-pass)' : 'var(--color-fail)',
+            }}>
+              {importResult.success ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
+              {importResult.success
+                ? `Successfully imported ${importResult.count} test cases`
+                : `Import failed: ${importResult.error || 'Unknown error'}`}
             </div>
           )}
-
-          {importResult && (
-            <div className="mt-4 space-y-2">
-              <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
-                <CheckCircle2 size={16} />
-                Successfully imported {importResult.success} test cases
-              </div>
-              {importResult.errors.length > 0 && (
-                <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-3">
-                  <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 mb-2">
-                    <AlertCircle size={16} />
-                    {importResult.errors.length} errors
-                  </div>
-                  <ul className="text-xs text-red-500 space-y-1">
-                    {importResult.errors.slice(0, 5).map((e, i) => (
-                      <li key={i}>Row {e.row}: {e.message}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+          {!importResult && (
+            <div className="mt-4 p-3 rounded-lg text-xs" style={{ background: 'var(--color-surface-alt)', color: 'var(--color-text-muted)' }}>
+              <p className="font-medium mb-1" style={{ color: 'var(--color-text-secondary)' }}>Excel Format:</p>
+              <p>Columns: Project Name, Test ID, Module, Title, Steps, Test Data, Expected Result, Actual Result, Status, Priority, Severity, Bug Link</p>
             </div>
           )}
         </motion.div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="mt-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
-      >
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">Excel Format Guide</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-700">
-                {['TC ID', 'Title', 'Module', 'Priority', 'Severity', 'Steps', 'Test Data', 'Expected Result', 'Actual Result', 'Status', 'Bug Link'].map(col => (
-                  <th key={col} className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{col}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="text-gray-600 dark:text-gray-400">
-                <td className="px-3 py-2 font-mono text-xs">TC-0001</td>
-                <td className="px-3 py-2">Login Test</td>
-                <td className="px-3 py-2">Auth</td>
-                <td className="px-3 py-2">High</td>
-                <td className="px-3 py-2">Critical</td>
-                <td className="px-3 py-2 text-xs">1: Enter credentials</td>
-                <td className="px-3 py-2">user:admin, pass:123</td>
-                <td className="px-3 py-2">Dashboard shown</td>
-                <td className="px-3 py-2">Dashboard shown</td>
-                <td className="px-3 py-2">Pass</td>
-                <td className="px-3 py-2">PROJ-102</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </motion.div>
     </div>
   );
 }

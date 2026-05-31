@@ -18,7 +18,7 @@ export default function AppLayout() {
   const [showLinks, setShowLinks] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+    <div className="flex flex-col min-h-screen" style={{ background: 'var(--color-bg)' }}>
       <div className="flex flex-1">
         <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
         <div className={`flex-1 flex flex-col transition-all duration-300 ${sidebarCollapsed ? 'ml-16' : 'ml-60'}`}>
@@ -26,18 +26,21 @@ export default function AppLayout() {
           <main className="flex-1 p-4 lg:p-6">
             <Outlet />
           </main>
-          <footer className="px-4 lg:px-6 py-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+          <footer className="px-4 lg:px-6 py-3 border-t"
+            style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
             <div className="flex flex-col items-center gap-2">
               <button onClick={() => setShowLinks(!showLinks)}
-                className="text-xs text-gray-400 hover:text-indigo-400 transition-colors cursor-pointer">
-                Developed by <span className="font-semibold">Sunil Paudyal</span>
+                className="text-xs transition-colors cursor-pointer"
+                style={{ color: 'var(--color-text-muted)' }}>
+                Developed by <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>Sunil Paudyal</span>
                 <span className="ml-1">{showLinks ? '▲' : '▼'}</span>
               </button>
               {showLinks && (
                 <div className="flex flex-wrap items-center justify-center gap-3 animate-fadeIn">
                   {socialLinks.map(link => (
                     <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer"
-                      className="text-xs text-gray-400 hover:text-indigo-400 transition-colors">
+                      className="text-xs transition-colors"
+                      style={{ color: 'var(--color-text-muted)' }}>
                       {link.label}
                     </a>
                   ))}

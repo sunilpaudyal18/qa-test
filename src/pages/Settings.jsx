@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Settings as SettingsIcon, Palette, Database, Download, Upload, Info } from 'lucide-react';
+import { Palette, Database, Download, Upload } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useToast } from '../contexts/ToastContext';
 import { createBackup, restoreBackup } from '../utils/backup';
@@ -54,104 +54,70 @@ export default function Settings() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">Settings</h1>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Manage application settings</p>
+        <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Settings</h1>
+        <p className="text-sm mb-6" style={{ color: 'var(--color-text-secondary)' }}>Manage application settings</p>
       </motion.div>
 
-      <div className="space-y-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
-        >
+      <div className="space-y-4 max-w-2xl">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          className="rounded-xl p-5"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600">
-              <Palette size={20} />
+            <div className="p-2 rounded-lg" style={{ background: 'var(--color-primary-subtle)' }}>
+              <Palette size={20} style={{ color: 'var(--color-primary)' }} />
             </div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Appearance</h2>
-          </div>
-          <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Theme</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Switch between light and dark mode</p>
+              <h2 className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>Appearance</h2>
+              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Toggle between light and dark mode</p>
             </div>
-            <button
-              onClick={toggleTheme}
-              className={`relative w-14 h-7 rounded-full transition-colors ${
-                theme === 'dark' ? 'bg-indigo-600' : 'bg-gray-200'
-              }`}
-            >
-              <div
-                className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform ${
-                  theme === 'dark' ? 'translate-x-7.5' : 'translate-x-0.5'
-                }`}
-              />
+          </div>
+          <div className="flex items-center justify-between px-4 py-3 rounded-lg" style={{ background: 'var(--color-surface-alt)' }}>
+            <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>
+              {theme === 'light' ? '🌞 Light Mode' : '🌙 Dark Mode'}
+            </span>
+            <button onClick={toggleTheme}
+              className="relative w-12 h-6 rounded-full transition-colors"
+              style={{ background: theme === 'light' ? 'var(--color-primary)' : 'var(--color-text-muted)' }}>
+              <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${
+                theme === 'light' ? 'left-0.5' : 'left-6.5'
+              }`} />
             </button>
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+          className="rounded-xl p-5"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600">
-              <Database size={20} />
+            <div className="p-2 rounded-lg" style={{ background: 'var(--color-primary-subtle)' }}>
+              <Database size={20} style={{ color: 'var(--color-primary)' }} />
             </div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Data Management</h2>
+            <div>
+              <h2 className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>Database</h2>
+              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>View storage stats and manage backups</p>
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 text-center">
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{dbStats.projects}</p>
-              <p className="text-xs text-gray-500">Projects</p>
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className="p-3 rounded-lg text-center" style={{ background: 'var(--color-surface-alt)' }}>
+              <p className="text-2xl font-bold tabular-nums" style={{ color: 'var(--color-primary)' }}>{dbStats.projects}</p>
+              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Projects</p>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 text-center">
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{dbStats.testCases}</p>
-              <p className="text-xs text-gray-500">Test Cases</p>
+            <div className="p-3 rounded-lg text-center" style={{ background: 'var(--color-surface-alt)' }}>
+              <p className="text-2xl font-bold tabular-nums" style={{ color: 'var(--color-primary)' }}>{dbStats.testCases}</p>
+              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Test Cases</p>
             </div>
-
           </div>
-          <div className="flex flex-wrap gap-2">
-            <button onClick={handleBackup} className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">
-              <Download size={16} />
-              Create Backup
+          <div className="flex gap-3">
+            <button onClick={handleBackup}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white transition-colors"
+              style={{ background: 'var(--color-primary)' }}>
+              <Download size={14} /> Backup
             </button>
-            <button onClick={handleRestore} className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-amber-600 text-white hover:bg-amber-700 transition-colors">
-              <Upload size={16} />
-              Restore from Backup
+            <button onClick={handleRestore}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors"
+              style={{ background: 'var(--color-surface-alt)', color: 'var(--color-text-primary)', border: '1px solid var(--color-border)' }}>
+              <Upload size={14} /> Restore
             </button>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600">
-              <Info size={20} />
-            </div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">About</h2>
-          </div>
-          <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-            <p><strong className="text-gray-900 dark:text-gray-100">QA Test Case Studio</strong> v1.0.0</p>
-            <p>A modern frontend-only QA Test Case Management application.</p>
-            <p className="flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
-              All data stored locally in your browser using IndexedDB.
-            </p>
-            <p className="flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
-              Works offline and can be installed as a PWA.
-            </p>
-            <p className="flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
-              No backend, no cloud, no authentication required.
-            </p>
           </div>
         </motion.div>
       </div>

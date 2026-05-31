@@ -8,23 +8,13 @@ import {
   ZoomIn, ZoomOut,
 } from 'lucide-react';
 
-const surfaceBg = '#111827';
-const elevatedBg = '#1F2937';
-const borderColor = 'rgba(255,255,255,0.08)';
-const primaryText = '#F8FAFC';
-const secondaryText = '#94A3B8';
-const successColor = '#22C55E';
-const failureColor = '#EF4444';
-const warningColor = '#F59E0B';
-const infoColor = '#3B82F6';
-
 const StatusBadge = ({ status, size = 'default' }) => {
   const config = {
-    Pass: { icon: CheckCircle2, bg: 'rgba(34,197,94,0.12)', text: successColor, border: 'rgba(34,197,94,0.25)' },
-    Fail: { icon: XCircle, bg: 'rgba(239,68,68,0.12)', text: failureColor, border: 'rgba(239,68,68,0.25)' },
-    Blocked: { icon: AlertTriangle, bg: 'rgba(245,158,11,0.12)', text: warningColor, border: 'rgba(245,158,11,0.25)' },
-    Untested: { icon: Tag, bg: 'rgba(148,163,184,0.08)', text: secondaryText, border: 'rgba(148,163,184,0.15)' },
-    'N/A': { icon: Tag, bg: 'rgba(148,163,184,0.08)', text: secondaryText, border: 'rgba(148,163,184,0.15)' },
+    Pass: { icon: CheckCircle2, bg: 'rgba(34,197,94,0.12)', text: 'var(--color-pass)', border: 'rgba(34,197,94,0.25)' },
+    Fail: { icon: XCircle, bg: 'rgba(239,68,68,0.12)', text: 'var(--color-fail)', border: 'rgba(239,68,68,0.25)' },
+    Blocked: { icon: AlertTriangle, bg: 'rgba(245,158,11,0.12)', text: 'var(--color-blocked)', border: 'rgba(245,158,11,0.25)' },
+    Untested: { icon: Tag, bg: 'rgba(148,163,184,0.08)', text: 'var(--color-untested)', border: 'rgba(148,163,184,0.15)' },
+    'N/A': { icon: Tag, bg: 'rgba(148,163,184,0.08)', text: 'var(--color-untested)', border: 'rgba(148,163,184,0.15)' },
   };
   const c = config[status] || config.Untested;
   const Icon = c.icon;
@@ -40,10 +30,10 @@ const StatusBadge = ({ status, size = 'default' }) => {
 
 const PriorityBadge = ({ priority }) => {
   const colors = {
-    Critical: { bg: 'rgba(239,68,68,0.12)', text: failureColor, border: 'rgba(239,68,68,0.2)' },
-    High: { bg: 'rgba(245,158,11,0.12)', text: warningColor, border: 'rgba(245,158,11,0.2)' },
-    Medium: { bg: 'rgba(59,130,246,0.12)', text: infoColor, border: 'rgba(59,130,246,0.2)' },
-    Low: { bg: 'rgba(148,163,184,0.08)', text: secondaryText, border: 'rgba(148,163,184,0.15)' },
+    Critical: { bg: 'rgba(239,68,68,0.12)', text: 'var(--color-critical)', border: 'rgba(239,68,68,0.2)' },
+    High: { bg: 'rgba(245,158,11,0.12)', text: 'var(--color-major)', border: 'rgba(245,158,11,0.2)' },
+    Medium: { bg: 'rgba(59,130,246,0.12)', text: 'var(--color-minor)', border: 'rgba(59,130,246,0.2)' },
+    Low: { bg: 'rgba(148,163,184,0.08)', text: 'var(--color-untested)', border: 'rgba(148,163,184,0.15)' },
   };
   const c = colors[priority] || colors.Medium;
   return (
@@ -56,10 +46,10 @@ const PriorityBadge = ({ priority }) => {
 
 const SeverityBadge = ({ severity }) => {
   const colors = {
-    Critical: { bg: 'rgba(239,68,68,0.12)', text: failureColor, border: 'rgba(239,68,68,0.2)' },
-    Major: { bg: 'rgba(245,158,11,0.12)', text: warningColor, border: 'rgba(245,158,11,0.2)' },
-    Minor: { bg: 'rgba(59,130,246,0.12)', text: infoColor, border: 'rgba(59,130,246,0.2)' },
-    Low: { bg: 'rgba(148,163,184,0.08)', text: secondaryText, border: 'rgba(148,163,184,0.15)' },
+    Critical: { bg: 'rgba(239,68,68,0.12)', text: 'var(--color-critical)', border: 'rgba(239,68,68,0.2)' },
+    Major: { bg: 'rgba(245,158,11,0.12)', text: 'var(--color-major)', border: 'rgba(245,158,11,0.2)' },
+    Minor: { bg: 'rgba(59,130,246,0.12)', text: 'var(--color-minor)', border: 'rgba(59,130,246,0.2)' },
+    Low: { bg: 'rgba(148,163,184,0.08)', text: 'var(--color-untested)', border: 'rgba(148,163,184,0.15)' },
   };
   const c = colors[severity] || colors.Minor;
   return (
@@ -74,17 +64,17 @@ const SectionCard = ({ title, icon: Icon, children, defaultOpen = true, actions 
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div className="rounded-xl border overflow-hidden transition-all duration-200"
-      style={{ background: surfaceBg, borderColor }}>
+      style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
       <button onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-5 py-3.5 hover:opacity-80 transition-opacity"
-        style={{ borderBottom: open ? `1px solid ${borderColor}` : 'none' }}>
+        className="w-full flex items-center justify-between px-5 py-3.5 transition-opacity"
+        style={{ borderBottom: open ? '1px solid var(--color-border)' : 'none' }}>
         <div className="flex items-center gap-2.5">
-          {Icon && <Icon className="w-4 h-4" style={{ color: infoColor }} />}
-          <span className="text-sm font-semibold" style={{ color: primaryText }}>{title}</span>
+          {Icon && <Icon className="w-4 h-4" style={{ color: 'var(--color-primary)' }} />}
+          <span className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>{title}</span>
         </div>
         <div className="flex items-center gap-2">
           {actions}
-          {open ? <ChevronDown className="w-4 h-4" style={{ color: secondaryText }} /> : <ChevronRight className="w-4 h-4" style={{ color: secondaryText }} />}
+          {open ? <ChevronDown className="w-4 h-4" style={{ color: 'var(--color-text-muted)' }} /> : <ChevronRight className="w-4 h-4" style={{ color: 'var(--color-text-muted)' }} />}
         </div>
       </button>
       {open && <div className="p-5">{children}</div>}
@@ -94,8 +84,8 @@ const SectionCard = ({ title, icon: Icon, children, defaultOpen = true, actions 
 
 const DetailRow = ({ label, value }) => (
   <div className="flex flex-col gap-1">
-    <span className="text-xs font-medium uppercase tracking-wider" style={{ color: secondaryText }}>{label}</span>
-    <span className="text-sm leading-relaxed" style={{ color: primaryText }}>{value || '--'}</span>
+    <span className="text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--color-text-secondary)' }}>{label}</span>
+    <span className="text-sm leading-relaxed" style={{ color: 'var(--color-text-primary)' }}>{value || '--'}</span>
   </div>
 );
 
@@ -107,17 +97,17 @@ const FullscreenImageModal = ({ src, onClose }) => {
       style={{ background: 'rgba(0,0,0,0.85)' }} onClick={onClose}>
       <div className="relative max-w-5xl max-h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-medium" style={{ color: secondaryText }}>Evidence Preview</span>
+          <span className="text-xs font-medium" style={{ color: 'var(--color-text-muted)' }}>Evidence Preview</span>
           <div className="flex items-center gap-2">
-            <button onClick={() => setZoomed(!zoomed)} className="p-1.5 rounded-lg transition-colors hover:bg-white/10" style={{ color: secondaryText }}>
+            <button onClick={() => setZoomed(!zoomed)} className="p-1.5 rounded-lg transition-colors" style={{ color: 'var(--color-text-muted)' }}>
               {zoomed ? <ZoomOut className="w-4 h-4" /> : <ZoomIn className="w-4 h-4" />}
             </button>
-            <button onClick={onClose} className="p-1.5 rounded-lg transition-colors hover:bg-white/10" style={{ color: secondaryText }}>
+            <button onClick={onClose} className="p-1.5 rounded-lg transition-colors" style={{ color: 'var(--color-text-muted)' }}>
               <X className="w-5 h-5" />
             </button>
           </div>
         </div>
-        <div className="overflow-auto rounded-xl" style={{ background: '#000', border: `1px solid ${borderColor}` }}>
+        <div className="overflow-auto rounded-xl" style={{ background: '#000', border: '1px solid var(--color-border)' }}>
           <img src={src} alt="Evidence" className={zoomed ? '' : 'max-h-[75vh] w-auto object-contain'}
             style={{ maxWidth: '100%', display: 'block', margin: '0 auto' }} />
         </div>
@@ -148,39 +138,39 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
       <div className="fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-6 lg:p-8 overflow-y-auto"
         style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
         <div className="w-full rounded-2xl shadow-2xl flex flex-col overflow-hidden my-4 lg:my-8"
-          style={{ maxWidth: '1400px', maxHeight: '90vh', background: '#0B1020', border: `1px solid ${borderColor}` }}
+          style={{ maxWidth: '1400px', maxHeight: '90vh', background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}
           onClick={e => e.stopPropagation()}>
           <div className="shrink-0 px-6 sm:px-8 lg:px-10 py-5 border-b flex items-start justify-between gap-4"
-            style={{ background: surfaceBg, borderColor }}>
+            style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-3 mb-2 flex-wrap">
                 <StatusBadge status={status} size="lg" />
                 <PriorityBadge priority={testCase.priority} />
                 <SeverityBadge severity={testCase.severity} />
               </div>
-              <h1 className="text-2xl font-bold leading-tight truncate" style={{ color: primaryText }}>
+              <h1 className="text-2xl font-bold leading-tight truncate" style={{ color: 'var(--color-text-primary)' }}>
                 {testCase.title}
               </h1>
               <div className="flex items-center gap-3 mt-1.5 flex-wrap">
                 <span className="text-xs font-mono px-2 py-0.5 rounded"
-                  style={{ background: 'rgba(255,255,255,0.05)', color: secondaryText }}>
+                  style={{ background: 'var(--color-surface-alt)', color: 'var(--color-text-secondary)' }}>
                   {testCase.testId || '--'}
                 </span>
                 {testCase.date && (
-                  <span className="flex items-center gap-1.5 text-xs" style={{ color: secondaryText }}>
+                  <span className="flex items-center gap-1.5 text-xs" style={{ color: 'var(--color-text-secondary)' }}>
                     <Calendar className="w-3 h-3" /> Executed {formatDate(testCase.date)}
                   </span>
                 )}
                 {testCase.bugLink && (
                   <a href={testCase.bugLink.startsWith('http') ? testCase.bugLink : '#'} target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors hover:opacity-80"
-                    style={{ background: 'rgba(239,68,68,0.12)', color: failureColor, border: '1px solid rgba(239,68,68,0.2)' }}>
+                    style={{ background: 'rgba(239,68,68,0.12)', color: 'var(--color-fail)', border: '1px solid rgba(239,68,68,0.2)' }}>
                     <ExternalLink className="w-3 h-3" /> {testCase.bugLink.length > 30 ? testCase.bugLink.substring(0, 30) + '...' : testCase.bugLink}
                   </a>
                 )}
               </div>
             </div>
-            <button onClick={onClose} className="p-2 rounded-xl shrink-0 transition-colors" style={{ color: secondaryText }}>
+            <button onClick={onClose} className="p-2 rounded-xl shrink-0 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -190,20 +180,20 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
               style={{ background: 'rgba(239,68,68,0.06)', borderColor: 'rgba(239,68,68,0.2)' }}>
               <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
                 style={{ background: 'rgba(239,68,68,0.12)' }}>
-                <AlertOctagon className="w-5 h-5" style={{ color: failureColor }} />
+                <AlertOctagon className="w-5 h-5" style={{ color: 'var(--color-fail)' }} />
               </div>
               <div className="space-y-2.5 min-w-0">
-                <h3 className="text-base font-bold" style={{ color: failureColor }}>Test Failed</h3>
+                <h3 className="text-base font-bold" style={{ color: 'var(--color-fail)' }}>Test Failed</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                   <div className="p-3 rounded-lg border-l-2"
-                    style={{ background: 'rgba(34,197,94,0.04)', borderColor: successColor, borderLeftWidth: '3px' }}>
-                    <span className="text-xs font-semibold uppercase tracking-wider block mb-1" style={{ color: successColor }}>Expected</span>
-                    <span style={{ color: primaryText }}>{testCase.expectedResult || '--'}</span>
+                    style={{ background: 'rgba(34,197,94,0.04)', borderColor: 'var(--color-pass)', borderLeftWidth: '3px' }}>
+                    <span className="text-xs font-semibold uppercase tracking-wider block mb-1" style={{ color: 'var(--color-pass)' }}>Expected</span>
+                    <span style={{ color: 'var(--color-text-primary)' }}>{testCase.expectedResult || '--'}</span>
                   </div>
                   <div className="p-3 rounded-lg border-l-2"
-                    style={{ background: 'rgba(239,68,68,0.04)', borderColor: failureColor, borderLeftWidth: '3px' }}>
-                    <span className="text-xs font-semibold uppercase tracking-wider block mb-1" style={{ color: failureColor }}>Actual</span>
-                    <span style={{ color: primaryText }}>{testCase.actualResult || '--'}</span>
+                    style={{ background: 'rgba(239,68,68,0.04)', borderColor: 'var(--color-fail)', borderLeftWidth: '3px' }}>
+                    <span className="text-xs font-semibold uppercase tracking-wider block mb-1" style={{ color: 'var(--color-fail)' }}>Actual</span>
+                    <span style={{ color: 'var(--color-text-primary)' }}>{testCase.actualResult || '--'}</span>
                   </div>
                 </div>
               </div>
@@ -218,7 +208,6 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
                     <DetailRow label="Module" value={testCase.module} />
                     <DetailRow label="Test ID" value={testCase.testId} />
                     <DetailRow label="Created" value={formatDate(testCase.createdAt)} />
-
                   </div>
                 </SectionCard>
 
@@ -226,12 +215,12 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
                   <div className="space-y-1.5">
                     {(testCase.steps || []).length > 0 ? testCase.steps.map((step, idx) => (
                       <div key={idx} className="flex gap-3 p-3 rounded-lg transition-colors"
-                        style={{ background: idx % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent' }}>
+                        style={{ background: idx % 2 === 0 ? 'var(--color-surface-alt)' : 'transparent' }}>
                         <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5"
-                          style={{ background: 'rgba(59,130,246,0.1)', color: infoColor }}>{idx + 1}</span>
-                        <span className="text-sm leading-relaxed pt-0.5" style={{ color: primaryText }}>{step}</span>
+                          style={{ background: 'var(--color-primary-subtle)', color: 'var(--color-primary)' }}>{idx + 1}</span>
+                        <span className="text-sm leading-relaxed pt-0.5" style={{ color: 'var(--color-text-primary)' }}>{step}</span>
                       </div>
-                    )) : <span className="text-sm italic" style={{ color: secondaryText }}>No steps defined</span>}
+                    )) : <span className="text-sm italic" style={{ color: 'var(--color-text-muted)' }}>No steps defined</span>}
                   </div>
                 </SectionCard>
 
@@ -240,7 +229,7 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
                     <div className="space-y-2">
                       {testCase.testData.map((data, idx) => (
                         <div key={idx} className="p-3 rounded-lg font-mono text-sm leading-relaxed"
-                          style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${borderColor}` }}>{data}</div>
+                          style={{ background: 'var(--color-surface-alt)', border: '1px solid var(--color-border)' }}>{data}</div>
                       ))}
                     </div>
                   </SectionCard>
@@ -249,24 +238,24 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
                 <SectionCard title="Results Comparison" icon={CheckCircle2}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="p-4 rounded-xl border-l-[3px]"
-                      style={{ background: 'rgba(34,197,94,0.03)', borderColor: successColor }}>
+                      style={{ background: 'rgba(34,197,94,0.03)', borderColor: 'var(--color-pass)' }}>
                       <div className="flex items-center gap-2 mb-2">
-                        <CheckCircle2 className="w-4 h-4" style={{ color: successColor }} />
-                        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: successColor }}>Expected</span>
+                        <CheckCircle2 className="w-4 h-4" style={{ color: 'var(--color-pass)' }} />
+                        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--color-pass)' }}>Expected</span>
                       </div>
-                      <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: primaryText }}>
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: 'var(--color-text-primary)' }}>
                         {testCase.expectedResult || '--'}</p>
                     </div>
                     <div className="p-4 rounded-xl border-l-[3px]"
                       style={{ background: isFailed ? 'rgba(239,68,68,0.03)' : 'rgba(34,197,94,0.03)',
-                        borderColor: isFailed ? failureColor : successColor }}>
+                        borderColor: isFailed ? 'var(--color-fail)' : 'var(--color-pass)' }}>
                       <div className="flex items-center gap-2 mb-2">
-                        {isFailed ? <XCircle className="w-4 h-4" style={{ color: failureColor }} /> :
-                          <CheckCircle2 className="w-4 h-4" style={{ color: successColor }} />}
+                        {isFailed ? <XCircle className="w-4 h-4" style={{ color: 'var(--color-fail)' }} /> :
+                          <CheckCircle2 className="w-4 h-4" style={{ color: 'var(--color-pass)' }} />}
                         <span className="text-xs font-bold uppercase tracking-wider"
-                          style={{ color: isFailed ? failureColor : successColor }}>Actual</span>
+                          style={{ color: isFailed ? 'var(--color-fail)' : 'var(--color-pass)' }}>Actual</span>
                       </div>
-                      <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: primaryText }}>
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: 'var(--color-text-primary)' }}>
                         {testCase.actualResult || '--'}</p>
                     </div>
                   </div>
@@ -278,7 +267,7 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
                       {evidenceList.map((item, idx) => (
                         <button key={idx} onClick={() => setFullscreenImg(item.src)}
                           className="group relative aspect-video rounded-lg overflow-hidden border transition-all duration-200"
-                          style={{ borderColor, background: '#000' }}>
+                          style={{ borderColor: 'var(--color-border)', background: '#000' }}>
                           <img src={item.src} alt={item.name}
                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
@@ -286,7 +275,7 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
                             <Maximize2 className="w-5 h-5" style={{ color: '#fff' }} />
                           </div>
                           <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5 text-[10px] font-medium truncate"
-                            style={{ background: 'rgba(0,0,0,0.7)', color: secondaryText }}>{item.name}</div>
+                            style={{ background: 'rgba(0,0,0,0.7)', color: 'var(--color-text-muted)' }}>{item.name}</div>
                         </button>
                       ))}
                     </div>
@@ -297,13 +286,13 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
               <div className="lg:w-[30%] space-y-4">
                 <SectionCard title="Execution Summary" icon={Play}>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between py-1.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
-                      <span className="text-xs font-medium" style={{ color: secondaryText }}>Status</span>
+                    <div className="flex items-center justify-between py-1.5" style={{ borderBottom: '1px solid var(--color-border)' }}>
+                      <span className="text-xs font-medium" style={{ color: 'var(--color-text-secondary)' }}>Status</span>
                       <StatusBadge status={status} />
                     </div>
-                    <div className="flex items-center justify-between py-1.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
-                      <span className="text-xs font-medium" style={{ color: secondaryText }}>Executed</span>
-                      <span className="text-xs" style={{ color: primaryText }}>{formatDate(testCase.date) || '--'}</span>
+                    <div className="flex items-center justify-between py-1.5" style={{ borderBottom: '1px solid var(--color-border)' }}>
+                      <span className="text-xs font-medium" style={{ color: 'var(--color-text-secondary)' }}>Executed</span>
+                      <span className="text-xs" style={{ color: 'var(--color-text-primary)' }}>{formatDate(testCase.date) || '--'}</span>
                     </div>
                   </div>
                 </SectionCard>
@@ -314,10 +303,10 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
                       className="flex items-center justify-between p-3 rounded-lg transition-colors group"
                       style={{ background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.15)' }}>
                       <div className="min-w-0">
-                        <span className="text-xs font-semibold block truncate" style={{ color: failureColor }}>{testCase.bugLink}</span>
-                        <span className="text-[10px] mt-0.5 block" style={{ color: secondaryText }}>Open in issue tracker</span>
+                        <span className="text-xs font-semibold block truncate" style={{ color: 'var(--color-fail)' }}>{testCase.bugLink}</span>
+                        <span className="text-[10px] mt-0.5 block" style={{ color: 'var(--color-text-muted)' }}>Open in issue tracker</span>
                       </div>
-                      <ExternalLink className="w-3.5 h-3.5 shrink-0 ml-2" style={{ color: secondaryText }} />
+                      <ExternalLink className="w-3.5 h-3.5 shrink-0 ml-2" style={{ color: 'var(--color-text-muted)' }} />
                     </a>
                   </SectionCard>
                 )}
@@ -326,18 +315,18 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
           </div>
 
           <div className="shrink-0 px-6 sm:px-8 lg:px-10 py-4 border-t flex items-center justify-between flex-wrap gap-3"
-            style={{ background: surfaceBg, borderColor }}>
+            style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
             <div className="flex items-center gap-1.5">
               {onEdit && (
                 <button onClick={() => { onEdit(testCase); onClose(); }}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200"
-                  style={{ background: infoColor, color: '#fff' }}>
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-white"
+                  style={{ background: 'var(--color-primary)' }}>
                   <Edit3 className="w-4 h-4" /> Edit
                 </button>
               )}
               <button onClick={onClose}
                 className="inline-flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200"
-                style={{ background: 'rgba(255,255,255,0.06)', color: secondaryText, border: `1px solid ${borderColor}` }}>
+                style={{ background: 'var(--color-surface-alt)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }}>
                 Close
               </button>
             </div>

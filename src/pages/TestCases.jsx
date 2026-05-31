@@ -20,27 +20,27 @@ const SEVERITIES = ['Low', 'Minor', 'Major', 'Critical'];
 
 const StatusBadge = ({ status }) => {
   const config = {
-    Pass: { icon: CheckCircle2, bg: 'rgba(34,197,94,0.12)', text: '#22C55E', border: 'rgba(34,197,94,0.2)', label: 'Passed' },
-    Fail: { icon: XCircle, bg: 'rgba(239,68,68,0.12)', text: '#EF4444', border: 'rgba(239,68,68,0.2)', label: 'Failed' },
-    Blocked: { icon: AlertTriangle, bg: 'rgba(245,158,11,0.12)', text: '#F59E0B', border: 'rgba(245,158,11,0.2)', label: 'Blocked' },
-    Untested: { icon: HelpCircle, bg: 'rgba(148,163,184,0.06)', text: '#94A3B8', border: 'rgba(148,163,184,0.12)', label: 'Not Run' },
+    Pass: { icon: CheckCircle2, bg: 'rgba(22,163,74,0.12)', text: 'var(--color-pass)', border: 'rgba(22,163,74,0.2)' },
+    Fail: { icon: XCircle, bg: 'rgba(220,38,38,0.12)', text: 'var(--color-fail)', border: 'rgba(220,38,38,0.2)' },
+    Blocked: { icon: AlertTriangle, bg: 'rgba(217,119,6,0.12)', text: 'var(--color-blocked)', border: 'rgba(217,119,6,0.2)' },
+    Untested: { icon: HelpCircle, bg: 'rgba(107,114,128,0.06)', text: 'var(--color-untested)', border: 'rgba(107,114,128,0.12)' },
   };
   const c = config[status] || config.Untested;
   const Icon = c.icon;
   return (
     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap"
       style={{ background: c.bg, color: c.text, border: `1px solid ${c.border}` }}>
-      <Icon className="w-3 h-3" /> {c.label}
+      <Icon className="w-3 h-3" /> {status === 'Untested' ? 'Not Run' : status}
     </span>
   );
 };
 
 const PriorityBadge = ({ priority }) => {
   const colors = {
-    Critical: { bg: 'rgba(239,68,68,0.12)', text: '#EF4444', border: 'rgba(239,68,68,0.2)' },
-    High: { bg: 'rgba(245,158,11,0.12)', text: '#F59E0B', border: 'rgba(245,158,11,0.2)' },
-    Medium: { bg: 'rgba(59,130,246,0.1)', text: '#3B82F6', border: 'rgba(59,130,246,0.18)' },
-    Low: { bg: 'rgba(148,163,184,0.06)', text: '#94A3B8', border: 'rgba(148,163,184,0.12)' },
+    Critical: { bg: 'rgba(220,38,38,0.12)', text: 'var(--color-critical)', border: 'rgba(220,38,38,0.2)' },
+    High: { bg: 'rgba(234,88,12,0.12)', text: 'var(--color-major)', border: 'rgba(234,88,12,0.2)' },
+    Medium: { bg: 'rgba(37,99,235,0.1)', text: 'var(--color-minor)', border: 'rgba(37,99,235,0.18)' },
+    Low: { bg: 'rgba(107,114,128,0.06)', text: 'var(--color-untested)', border: 'rgba(107,114,128,0.12)' },
   };
   const c = colors[priority] || colors.Medium;
   return (
@@ -183,62 +183,73 @@ export default function TestCases() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Test Cases</h1>
-          <p className="text-sm text-gray-400 mt-1">{filtered.length} test cases in <strong>{activeProject}</strong></p>
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Test Cases</h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>{filtered.length} test cases in <strong style={{ color: 'var(--color-text-primary)' }}>{activeProject}</strong></p>
         </div>
         <div className="flex items-center gap-2">
           <select value={activeProject} onChange={e => { if (e.target.value === '__add__') handleCreateProject(); else setActiveProject(e.target.value); }}
-            className="px-3 py-2 rounded-lg border border-gray-700 bg-gray-800 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            className="px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2"
+            style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-strong)', color: 'var(--color-text-primary)' }}>
             {projects.map(p => <option key={p.name} value={p.name}>{p.name}</option>)}
-            <option value="__add__" className="text-indigo-400">+ New Project</option>
+            <option value="__add__" style={{ color: 'var(--color-primary)' }}>+ New Project</option>
           </select>
-          <button onClick={() => exportToExcel(testCases)} className="p-2 rounded-lg bg-gray-800 border border-gray-700 text-gray-400 hover:text-white transition-colors" title="Export Excel">
+          <button onClick={() => exportToExcel(testCases)}
+            className="p-2 rounded-lg transition-colors"
+            style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text-muted)' }}
+            title="Export Excel">
             <Download size={16} />
           </button>
           <button onClick={() => { setEditingCase(null); setFormOpen(true); }}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium">
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors"
+            style={{ background: 'var(--color-primary)' }}>
             <Plus size={16} /> New Case
           </button>
         </div>
       </div>
 
-      <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
-        <div className="p-4 border-b border-gray-800 flex flex-col sm:flex-row gap-3">
+      <div className="rounded-xl overflow-hidden" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+        <div className="p-4 flex flex-col sm:flex-row gap-3" style={{ borderBottom: '1px solid var(--color-border)' }}>
           <div className="relative flex-1">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--color-text-muted)' }} />
             <input type="text" placeholder="Search by title, module, or ID..." value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 rounded-lg border border-gray-700 bg-gray-800 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              className="w-full pl-9 pr-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2"
+              style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-strong)', color: 'var(--color-text-primary)' }} />
           </div>
           <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
-            className="px-3 py-2 rounded-lg border border-gray-700 bg-gray-800 text-sm text-gray-200">
+            className="px-3 py-2 rounded-lg text-sm"
+            style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-strong)', color: 'var(--color-text-primary)' }}>
             <option value="All">All Status</option>
             {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
           <select value={priorityFilter} onChange={e => setPriorityFilter(e.target.value)}
-            className="px-3 py-2 rounded-lg border border-gray-700 bg-gray-800 text-sm text-gray-200">
+            className="px-3 py-2 rounded-lg text-sm"
+            style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-strong)', color: 'var(--color-text-primary)' }}>
             <option value="All">All Priority</option>
             {PRIORITIES.map(p => <option key={p} value={p}>{p}</option>)}
           </select>
           {selected.length > 0 && (
-            <button onClick={handleBulkDelete} className="px-3 py-2 rounded-lg text-sm font-medium bg-red-600/20 text-red-400 border border-red-800 hover:bg-red-600/30">
+            <button onClick={handleBulkDelete}
+              className="px-3 py-2 rounded-lg text-sm font-medium"
+              style={{ background: 'rgba(220,38,38,0.1)', color: 'var(--color-fail)', border: '1px solid rgba(220,38,38,0.2)' }}>
               <Trash2 size={14} className="inline mr-1" /> Delete {selected.length}
             </button>
           )}
         </div>
 
         {loading ? (
-          <div className="p-8 text-center text-gray-500">Loading...</div>
+          <div className="p-8 text-center" style={{ color: 'var(--color-text-muted)' }}>Loading...</div>
         ) : paged.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <TestTube2 size={48} className="text-gray-700 mb-4" />
-            <h3 className="text-lg font-semibold text-gray-300 mb-2">No test cases found</h3>
-            <p className="text-gray-500 text-sm mb-4">
+            <TestTube2 size={48} style={{ color: 'var(--color-border)' }} className="mb-4" />
+            <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>No test cases found</h3>
+            <p className="text-sm mb-4" style={{ color: 'var(--color-text-muted)' }}>
               {testCases.length === 0 ? 'Create your first test case' : 'Try adjusting your filters'}
             </p>
             {testCases.length === 0 && (
               <button onClick={() => { setEditingCase(null); setFormOpen(true); }}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium">
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white"
+                style={{ background: 'var(--color-primary)' }}>
                 Create Test Case
               </button>
             )}
@@ -247,22 +258,23 @@ export default function TestCases() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-800 text-xs font-bold uppercase tracking-wider text-gray-500 bg-gray-800/50">
+                <tr className="text-xs font-bold uppercase tracking-wider"
+                  style={{ background: 'var(--color-surface-alt)', borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}>
                   <th className="py-3.5 pl-4 pr-2 w-10">
                     <input type="checkbox" checked={paged.length > 0 && selected.length === paged.length}
                       onChange={e => handleSelectAll(e.target.checked)}
-                      className="w-4 h-4 rounded accent-indigo-500" />
+                      className="w-4 h-4 rounded" style={{ accentColor: 'var(--color-primary)' }} />
                   </th>
-                  <th className="py-3.5 px-3 cursor-pointer hover:text-gray-300" onClick={() => toggleSort('testId')}>
+                  <th className="py-3.5 px-3 cursor-pointer hover:opacity-80" onClick={() => toggleSort('testId')}>
                     <span className="flex items-center">ID <SortIcon field="testId" /></span>
                   </th>
-                  <th className="py-3.5 px-3 cursor-pointer hover:text-gray-300" onClick={() => toggleSort('title')}>
+                  <th className="py-3.5 px-3 cursor-pointer hover:opacity-80" onClick={() => toggleSort('title')}>
                     <span className="flex items-center">Test Case <SortIcon field="title" /></span>
                   </th>
-                  <th className="py-3.5 px-3 cursor-pointer hover:text-gray-300" onClick={() => toggleSort('status')}>
+                  <th className="py-3.5 px-3 cursor-pointer hover:opacity-80" onClick={() => toggleSort('status')}>
                     <span className="flex items-center">Status <SortIcon field="status" /></span>
                   </th>
-                  <th className="py-3.5 px-3 cursor-pointer hover:text-gray-300" onClick={() => toggleSort('priority')}>
+                  <th className="py-3.5 px-3 cursor-pointer hover:opacity-80" onClick={() => toggleSort('priority')}>
                     <span className="flex items-center">Priority <SortIcon field="priority" /></span>
                   </th>
                   <th className="py-3.5 px-3">Expected vs Actual</th>
@@ -270,24 +282,25 @@ export default function TestCases() {
                   <th className="py-3.5 pr-4 pl-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-800/50">
+              <tbody className="divide-y" style={{ borderColor: 'var(--color-border)' }}>
                 {paged.map((tc, idx) => {
                   const isSelected = selected.includes(tc.id);
                   return (
-                    <tr key={tc.id} className={`transition-colors cursor-pointer ${isSelected ? 'bg-indigo-900/10' : idx % 2 === 0 ? 'bg-transparent' : 'bg-white/[.02]'}`}
+                    <tr key={tc.id} className="transition-colors cursor-pointer"
+                      style={isSelected ? { background: 'var(--color-primary-subtle)' } : idx % 2 === 0 ? {} : { background: 'var(--color-surface-alt)' }}
                       onClick={() => setViewingCase(tc)}>
                       <td className="py-3 pl-4 pr-2" onClick={e => e.stopPropagation()}>
                         <input type="checkbox" checked={isSelected}
                           onChange={e => handleSelect(tc.id, e.target.checked)}
-                          className="w-4 h-4 rounded accent-indigo-500" />
+                          className="w-4 h-4 rounded" style={{ accentColor: 'var(--color-primary)' }} />
                       </td>
                       <td className="py-3 px-3">
-                        <span className="font-mono text-xs font-semibold text-indigo-400">{tc.testId || tc.id?.toString().slice(0, 8).toUpperCase()}</span>
+                        <span className="font-mono text-xs font-semibold" style={{ color: 'var(--color-primary)' }}>{tc.testId || tc.id?.toString().slice(0, 8).toUpperCase()}</span>
                       </td>
                       <td className="py-3 px-3">
                         <div className="flex flex-col">
-                          {tc.module && <span className="text-[10px] font-medium text-gray-500 mb-0.5">{tc.module}</span>}
-                          <span className="text-sm font-medium leading-snug text-gray-200">{tc.title}</span>
+                          {tc.module && <span className="text-[10px] font-medium mb-0.5" style={{ color: 'var(--color-text-muted)' }}>{tc.module}</span>}
+                          <span className="text-sm font-medium leading-snug" style={{ color: 'var(--color-text-primary)' }}>{tc.title}</span>
                         </div>
                       </td>
                       <td className="py-3 px-3"><StatusBadge status={tc.status} /></td>
@@ -295,37 +308,41 @@ export default function TestCases() {
                       <td className="py-3 px-3 max-w-[220px]">
                         <div className="space-y-0.5 text-xs leading-relaxed">
                           <div className="flex gap-1.5">
-                            <span className="font-semibold shrink-0 text-emerald-500">Exp:</span>
-                            <span className="line-clamp-1 text-gray-400">{tc.expectedResult || '--'}</span>
+                            <span className="font-semibold shrink-0" style={{ color: 'var(--color-pass)' }}>Exp:</span>
+                            <span className="line-clamp-1" style={{ color: 'var(--color-text-secondary)' }}>{tc.expectedResult || '--'}</span>
                           </div>
                           {tc.actualResult && (
                             <div className="flex gap-1.5">
-                              <span className="font-semibold shrink-0" style={{ color: tc.status === 'Fail' ? '#EF4444' : '#22C55E' }}>Act:</span>
-                              <span className="line-clamp-1 text-gray-400">{tc.actualResult}</span>
+                              <span className="font-semibold shrink-0" style={{ color: tc.status === 'Fail' ? 'var(--color-fail)' : 'var(--color-pass)' }}>Act:</span>
+                              <span className="line-clamp-1" style={{ color: 'var(--color-text-secondary)' }}>{tc.actualResult}</span>
                             </div>
                           )}
                         </div>
                       </td>
                       <td className="py-3 px-3 text-center" onClick={e => e.stopPropagation()}>
                         {tc.screenshot ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium border border-gray-700 text-gray-400">
+                          <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium"
+                            style={{ border: '1px solid var(--color-border)', color: 'var(--color-text-muted)' }}>
                             <ImageIcon className="w-3 h-3" /> 1
                           </span>
-                        ) : <span className="text-[10px] text-gray-600">--</span>}
+                        ) : <span className="text-[10px]" style={{ color: 'var(--color-text-muted)' }}>--</span>}
                       </td>
                       <td className="py-3 pr-4 pl-3 text-right" onClick={e => e.stopPropagation()}>
                         <div className="flex items-center justify-end gap-1">
                           <button onClick={() => { setViewingCase(tc); }}
-                            className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-indigo-400 bg-indigo-900/20 hover:bg-indigo-900/30 transition-all">
+                            className="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                            style={{ color: 'var(--color-primary)', background: 'var(--color-primary-subtle)' }}>
                             View
                           </button>
                           <div className="relative">
                             <button onClick={e => { e.stopPropagation(); setEditingCase(tc); setFormOpen(true); }}
-                              className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-gray-800 transition-colors">
+                              className="p-1.5 rounded-lg transition-colors"
+                              style={{ color: 'var(--color-text-muted)' }}>
                               <Edit2 size={14} />
                             </button>
                             <button onClick={() => { setDeleteTarget(tc.id); setConfirmOpen(true); }}
-                              className="p-1.5 rounded-lg text-gray-500 hover:text-red-400 hover:bg-gray-800 transition-colors">
+                              className="p-1.5 rounded-lg transition-colors"
+                              style={{ color: 'var(--color-text-muted)' }}>
                               <Trash2 size={14} />
                             </button>
                           </div>
@@ -340,13 +357,16 @@ export default function TestCases() {
         )}
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-gray-800 bg-gray-800/50">
-            <span className="text-sm text-gray-500">Page {page} of {totalPages}</span>
+          <div className="flex items-center justify-between px-4 py-3"
+            style={{ background: 'var(--color-surface-alt)', borderTop: '1px solid var(--color-border)' }}>
+            <span className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Page {page} of {totalPages}</span>
             <div className="flex gap-1">
               <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-                className="p-1.5 rounded hover:bg-gray-700 text-gray-500 disabled:opacity-30"><ChevronLeft size={16} /></button>
+                className="p-1.5 rounded disabled:opacity-30"
+                style={{ color: 'var(--color-text-muted)' }}><ChevronLeft size={16} /></button>
               <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
-                className="p-1.5 rounded hover:bg-gray-700 text-gray-500 disabled:opacity-30"><ChevronRight size={16} /></button>
+                className="p-1.5 rounded disabled:opacity-30"
+                style={{ color: 'var(--color-text-muted)' }}><ChevronRight size={16} /></button>
             </div>
           </div>
         )}

@@ -3,60 +3,68 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-gray-50: #FAFAF8;
-  --color-gray-100: #F8FAFC;
-  --color-gray-200: #E5E7EB;
-  --color-gray-300: #D1D5DB;
+  --color-gray-50: #F8FAFC;
+  --color-gray-100: #F1F5F9;
+  --color-gray-200: #E2E8F0;
+  --color-gray-300: #CBD5E1;
   --color-gray-400: #94A3B8;
-  --color-gray-500: #6B7280;
-  --color-gray-600: #4B5563;
-  --color-gray-700: #374151;
-  --color-gray-800: #1F2937;
-  --color-gray-900: #111827;
-  --color-gray-950: #0B1020;
-
-  --color-indigo-50: #EEF2FF;
-  --color-indigo-100: #E0E7FF;
-  --color-indigo-200: #C7D2FE;
-  --color-indigo-300: #A5B4FC;
-  --color-indigo-400: #818CF8;
-  --color-indigo-500: #6366F1;
-  --color-indigo-600: #4F46E5;
-  --color-indigo-700: #4338CA;
-  --color-indigo-800: #3730A3;
-  --color-indigo-900: #312E81;
-
-  --color-gold: #D4AF37;
-  --color-gold-light: #E5C45A;
+  --color-gray-500: #64748B;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1E293B;
+  --color-gray-900: #0F172A;
+  --color-gray-950: #020617;
 }
 
 :root {
-  --color-primary: #0F172A;
-  --color-accent: #D4AF37;
-  --color-accent-secondary: #4F46E5;
-  --color-bg: #FAFAF8;
+  --color-bg: #F6F8FA;
   --color-surface: #FFFFFF;
-  --color-text-primary: #111827;
-  --color-text-secondary: #6B7280;
-  --color-border: #E5E7EB;
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-error: #EF4444;
+  --color-surface-alt: #F1F5F9;
+  --color-sidebar: #FFFFFF;
+  --color-sidebar-item-hover: #F1F5F9;
+  --color-sidebar-item-active: #EFF6FF;
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94A3B8;
+  --color-border: #E2E8F0;
+  --color-border-strong: #CBD5E1;
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-primary-subtle: #DBEAFE;
+  --color-pass: #16A34A;
+  --color-fail: #DC2626;
+  --color-blocked: #D97706;
+  --color-untested: #6B7280;
+  --color-critical: #DC2626;
+  --color-major: #EA580C;
+  --color-minor: #2563EB;
+  --color-info: #0891B2;
   color-scheme: light;
 }
 
 .dark {
-  --color-primary: #E2E8F0;
-  --color-accent: #D4AF37;
-  --color-accent-secondary: #818CF8;
-  --color-bg: #0B1020;
-  --color-surface: #111827;
-  --color-text-primary: #F8FAFC;
+  --color-bg: #0A0E17;
+  --color-surface: #111B2E;
+  --color-surface-alt: #1A2236;
+  --color-sidebar: #0F1629;
+  --color-sidebar-item-hover: #1A2236;
+  --color-sidebar-item-active: #1E293B;
+  --color-text-primary: #F1F5F9;
   --color-text-secondary: #94A3B8;
-  --color-border: #1F2937;
-  --color-success: #34D399;
-  --color-warning: #FBBF24;
-  --color-error: #F87171;
+  --color-text-muted: #64748B;
+  --color-border: #1E293B;
+  --color-border-strong: #334155;
+  --color-primary: #3B82F6;
+  --color-primary-hover: #60A5FA;
+  --color-primary-subtle: #1E3A5F;
+  --color-pass: #22C55E;
+  --color-fail: #EF4444;
+  --color-blocked: #F59E0B;
+  --color-untested: #9CA3AF;
+  --color-critical: #EF4444;
+  --color-major: #F97316;
+  --color-minor: #60A5FA;
+  --color-info: #22D3EE;
   color-scheme: dark;
 }
 
@@ -69,38 +77,18 @@ body {
   color: var(--color-text-primary);
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: #D1D5DB;
+  background: var(--color-border);
   border-radius: 3px;
 }
-
 .dark ::-webkit-scrollbar-thumb {
-  background: #4B5563;
+  background: var(--color-border-strong);
 }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.animate-fadeIn {
-  animation: fadeIn 0.2s ease-out;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes goldPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0); }
-}
+.animate-fadeIn { animation: fadeIn 0.2s ease-out; }

@@ -18,19 +18,25 @@ const menuItems = [
 export default function Sidebar({ collapsed, setCollapsed }) {
   return (
     <aside
-      className={`fixed top-0 left-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 z-50 transition-all duration-300 ${
-        collapsed ? 'w-16' : 'w-60'
-      }`}
+      className="fixed top-0 left-0 h-full z-50 transition-all duration-300"
+      style={{
+        background: 'var(--color-sidebar)',
+        borderRight: '1px solid var(--color-border)',
+        width: collapsed ? '60px' : '240px',
+      }}
     >
-      <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex items-center justify-between h-16 px-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
         {!collapsed && (
-          <span className="font-bold text-lg bg-gradient-to-r from-gray-900 via-indigo-600 to-gold dark:from-gray-100 dark:via-indigo-400 dark:to-gold bg-clip-text text-transparent whitespace-nowrap">
+          <span className="font-bold text-lg" style={{ color: 'var(--color-primary)' }}>
             QA Studio
           </span>
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400"
+          className="p-1.5 rounded-lg"
+          style={{ color: 'var(--color-text-muted)' }}
+          onMouseEnter={e => e.currentTarget.style.background = 'var(--color-sidebar-item-hover)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
         >
           {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
         </button>
@@ -41,18 +47,32 @@ export default function Sidebar({ collapsed, setCollapsed }) {
             key={item.to}
             to={item.to}
             end={item.to === '/'}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
-                isActive
-                  ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 shadow-[inset_2px_0_0_0_#D4AF37]'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
-              }`
-            }
+            style={({ isActive }) => ({
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              padding: '0.625rem 0.75rem',
+              borderRadius: '0.5rem',
+              fontSize: '0.875rem',
+              fontWeight: isActive ? 600 : 400,
+              color: isActive ? 'var(--color-primary)' : 'var(--color-text-secondary)',
+              background: isActive ? 'var(--color-sidebar-item-active)' : 'transparent',
+              boxShadow: isActive ? 'inset 2px 0 0 0 var(--color-primary)' : 'none',
+              transition: 'all 0.15s ease',
+            })}
+            onMouseEnter={e => {
+              if (!e.currentTarget.getAttribute('data-active') === 'true') {
+                e.currentTarget.style.background = 'var(--color-sidebar-item-hover)';
+              }
+            }}
+            onMouseLeave={e => {
+              if (!e.currentTarget.getAttribute('data-active') === 'true') {
+                e.currentTarget.style.background = 'transparent';
+              }
+            }}
           >
             <item.icon size={20} className="shrink-0" />
-            {!collapsed && (
-              <span className="text-sm font-medium">{item.label}</span>
-            )}
+            {!collapsed && <span>{item.label}</span>}
           </NavLink>
         ))}
       </nav>

@@ -4,24 +4,24 @@ import { BarChart3, PieChart, TrendingUp } from 'lucide-react';
 import db from '../db/db';
 
 const COLORS = {
-  Pass: '#10b981',
-  Fail: '#ef4444',
-  Blocked: '#f59e0b',
-  'Not Executed': '#9CA3AF',
+  Pass: 'var(--color-pass)',
+  Fail: 'var(--color-fail)',
+  Blocked: 'var(--color-blocked)',
+  'Not Executed': 'var(--color-untested)',
 };
 
 const PRIORITY_COLORS = {
-  Critical: '#dc2626',
-  High: '#f97316',
-  Medium: '#3b82f6',
-  Low: '#6B7280',
+  Critical: 'var(--color-critical)',
+  High: 'var(--color-major)',
+  Medium: 'var(--color-minor)',
+  Low: 'var(--color-untested)',
 };
 
 const SEVERITY_COLORS = {
-  Critical: '#dc2626',
-  High: '#f97316',
-  Medium: '#3b82f6',
-  Low: '#6B7280',
+  Critical: 'var(--color-critical)',
+  Major: 'var(--color-major)',
+  Minor: 'var(--color-minor)',
+  Low: 'var(--color-untested)',
 };
 
 function PieChartComponent({ data, colors, size = 180 }) {
@@ -48,19 +48,19 @@ function PieChartComponent({ data, colors, size = 180 }) {
             key={i}
             d={`M ${size / 2} ${size / 2} L ${x1} ${y1} A ${size / 2 - 10} ${size / 2 - 10} 0 ${largeArc} 1 ${x2} ${y2} Z`}
             fill={colors[slice.label] || '#ccc'}
-            stroke="white"
+            stroke="var(--color-bg)"
             strokeWidth="2"
           >
             <title>{slice.label}: {slice.value}</title>
           </path>
         );
       })}
-      <circle cx={size / 2} cy={size / 2} r={size / 4} fill="white" className="dark:fill-gray-900" />
+      <circle cx={size / 2} cy={size / 2} r={size / 4} style={{ fill: 'var(--color-bg)' }} />
     </svg>
   );
 }
 
-function BarChartComponent({ data, color = '#6366F1', height = 200 }) {
+function BarChartComponent({ data, colors, height = 200 }) {
   const max = Math.max(...data.map(d => d.value), 1);
   return (
     <div className="flex items-end gap-2" style={{ height }}>
@@ -71,9 +71,9 @@ function BarChartComponent({ data, color = '#6366F1', height = 200 }) {
             animate={{ height: `${(d.value / max) * 100}%` }}
             transition={{ duration: 0.6, delay: i * 0.05 }}
             className="w-full rounded-t-md"
-            style={{ backgroundColor: color, opacity: 0.7 + (i / data.length) * 0.3 }}
+            style={{ background: colors?.[d.label] || 'var(--color-primary)', opacity: 0.7 + (i / data.length) * 0.3 }}
           />
-          <span className="text-[10px] text-gray-500 dark:text-gray-400 text-center truncate w-full">{d.label}</span>
+          <span className="text-[10px] text-center truncate w-full" style={{ color: 'var(--color-text-muted)' }}>{d.label}</span>
         </div>
       ))}
     </div>
@@ -112,7 +112,7 @@ export default function Reports() {
   }, [testCases]);
 
   const severityData = useMemo(() => {
-    const counts = { Critical: 0, High: 0, Medium: 0, Low: 0 };
+    const counts = { Critical: 0, Major: 0, Minor: 0, Low: 0 };
     testCases.forEach(tc => { if (counts[tc.severity] !== undefined) counts[tc.severity]++; });
     return Object.entries(counts).map(([label, value]) => ({ label, value }));
   }, [testCases]);
@@ -122,88 +122,84 @@ export default function Reports() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">Reports & Analytics</h1>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Visual insights into your testing progress</p>
+        <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--color-text-primary)' }}>Reports & Analytics</h1>
+        <p className="text-sm mb-6" style={{ color: 'var(--color-text-secondary)' }}>Visual insights into your testing progress</p>
       </motion.div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Pass Rate</p>
-          <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{passRate}%</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          className="rounded-xl p-4"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+          <p className="text-xs uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>Pass Rate</p>
+          <p className="text-3xl font-bold mt-1" style={{ color: 'var(--color-pass)' }}>{passRate}%</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Test Cases</p>
-          <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">{stats.total}</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
+          className="rounded-xl p-4"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+          <p className="text-xs uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>Total Test Cases</p>
+          <p className="text-3xl font-bold mt-1" style={{ color: 'var(--color-text-primary)' }}>{stats.total}</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Fail Count</p>
-          <p className="text-3xl font-bold text-red-600 dark:text-red-400 mt-1">{stats.fail}</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+          className="rounded-xl p-4"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+          <p className="text-xs uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>Fail Count</p>
+          <p className="text-3xl font-bold mt-1" style={{ color: 'var(--color-fail)' }}>{stats.fail}</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Blocked</p>
-          <p className="text-3xl font-bold text-amber-600 dark:text-amber-400 mt-1">{stats.blocked}</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+          className="rounded-xl p-4"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+          <p className="text-xs uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>Blocked</p>
+          <p className="text-3xl font-bold mt-1" style={{ color: 'var(--color-blocked)' }}>{stats.blocked}</p>
         </motion.div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+          className="rounded-xl p-5"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
           <div className="flex items-center gap-2 mb-4">
-            <PieChart size={18} className="text-indigo-500" />
-            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Status Distribution</h2>
+            <PieChart size={18} style={{ color: 'var(--color-primary)' }} />
+            <h2 className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>Status Distribution</h2>
           </div>
           <div className="flex flex-col items-center">
             <PieChartComponent data={statusData} colors={COLORS} />
             <div className="flex flex-wrap gap-4 mt-4">
               {statusData.map(d => (
                 <div key={d.label} className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[d.label] }} />
-                  <span className="text-xs text-gray-600 dark:text-gray-400">{d.label}: {d.value}</span>
+                  <div className="w-3 h-3 rounded-full" style={{ background: COLORS[d.label] }} />
+                  <span className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>{d.label}: {d.value}</span>
                 </div>
               ))}
             </div>
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-          className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
+          className="rounded-xl p-5"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
           <div className="flex items-center gap-2 mb-4">
-            <BarChart3 size={18} className="text-indigo-500" />
-            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Priority Distribution</h2>
+            <BarChart3 size={18} style={{ color: 'var(--color-primary)' }} />
+            <h2 className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>Priority Distribution</h2>
           </div>
-          <BarChartComponent data={priorityData} color="#6366F1" height={200} />
+          <BarChartComponent data={priorityData} colors={PRIORITY_COLORS} height={200} />
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="rounded-xl p-5"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
           <div className="flex items-center gap-2 mb-4">
-            <BarChart3 size={18} className="text-orange-500" />
-            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Severity Distribution</h2>
+            <BarChart3 size={18} style={{ color: 'var(--color-major)' }} />
+            <h2 className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>Severity Distribution</h2>
           </div>
-          <BarChartComponent data={severityData} color="#f97316" height={200} />
+          <BarChartComponent data={severityData} colors={SEVERITY_COLORS} height={200} />
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+          className="rounded-xl p-5"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={18} className="text-emerald-500" />
-            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Execution Summary</h2>
+            <TrendingUp size={18} style={{ color: 'var(--color-pass)' }} />
+            <h2 className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>Execution Summary</h2>
           </div>
           <div className="space-y-3">
             {statusData.map(d => {
@@ -211,16 +207,16 @@ export default function Reports() {
               return (
                 <div key={d.label}>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600 dark:text-gray-400">{d.label}</span>
-                    <span className="font-medium text-gray-900 dark:text-gray-100">{d.value} ({pct}%)</span>
+                    <span style={{ color: 'var(--color-text-secondary)' }}>{d.label}</span>
+                    <span className="font-medium" style={{ color: 'var(--color-text-primary)' }}>{d.value} ({pct}%)</span>
                   </div>
-                  <div className="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                  <div className="h-2.5 rounded-full overflow-hidden" style={{ background: 'var(--color-border)' }}>
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${pct}%` }}
                       transition={{ duration: 0.8 }}
                       className="h-full rounded-full"
-                      style={{ backgroundColor: COLORS[d.label] }}
+                      style={{ background: COLORS[d.label] }}
                     />
                   </div>
                 </div>
