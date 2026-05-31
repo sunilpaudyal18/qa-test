@@ -7,21 +7,21 @@ const COLORS = {
   Pass: '#10b981',
   Fail: '#ef4444',
   Blocked: '#f59e0b',
-  'Not Executed': '#9ca3af',
+  'Not Executed': '#9CA3AF',
 };
 
 const PRIORITY_COLORS = {
   Critical: '#dc2626',
   High: '#f97316',
   Medium: '#3b82f6',
-  Low: '#6b7280',
+  Low: '#6B7280',
 };
 
 const SEVERITY_COLORS = {
   Critical: '#dc2626',
   High: '#f97316',
   Medium: '#3b82f6',
-  Low: '#6b7280',
+  Low: '#6B7280',
 };
 
 function PieChartComponent({ data, colors, size = 180 }) {
@@ -60,7 +60,7 @@ function PieChartComponent({ data, colors, size = 180 }) {
   );
 }
 
-function BarChartComponent({ data, color = '#6366f1', height = 200 }) {
+function BarChartComponent({ data, color = '#6366F1', height = 200 }) {
   const max = Math.max(...data.map(d => d.value), 1);
   return (
     <div className="flex items-end gap-2" style={{ height }}>
@@ -179,7 +179,7 @@ export default function Reports() {
             <BarChart3 size={18} className="text-indigo-500" />
             <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Priority Distribution</h2>
           </div>
-          <BarChartComponent data={priorityData} color="#6366f1" height={200} />
+          <BarChartComponent data={priorityData} color="#6366F1" height={200} />
         </motion.div>
 
         <motion.div

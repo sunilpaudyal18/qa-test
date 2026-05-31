@@ -14,7 +14,7 @@ export default defineConfig({
         name: 'QA Test Case Studio',
         short_name: 'QA Studio',
         description: 'Modern QA Test Case Management Application',
-        theme_color: '#6366f1',
+        theme_color: '#0B1020',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait-primary',

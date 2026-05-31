@@ -92,7 +92,7 @@ export default function Dashboard() {
     load();
   }, []);
 
-  const statusColors = { Pass: '#10b981', Fail: '#ef4444', Blocked: '#f59e0b', Untested: '#6b7280' };
+  const statusColors = { Pass: '#10b981', Fail: '#ef4444', Blocked: '#f59e0b', Untested: '#6B7280' };
   const passRate = stats.total > 0 ? Math.round((stats.pass / stats.total) * 100) : 0;
 
   return (

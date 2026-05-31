@@ -123,7 +123,7 @@ export default function Topbar({ onMenuClick }) {
           >
             <MonitorDown size={20} />
             {!installPrompt && (
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-500 rounded-full animate-pulse" />
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-gold rounded-full animate-pulse shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
             )}
           </button>
           <button

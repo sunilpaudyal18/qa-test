@@ -9,9 +9,9 @@ import {
 } from 'lucide-react';
 
 const surfaceBg = '#111827';
-const elevatedBg = '#1A2333';
+const elevatedBg = '#1F2937';
 const borderColor = 'rgba(255,255,255,0.08)';
-const primaryText = '#F9FAFB';
+const primaryText = '#F8FAFC';
 const secondaryText = '#94A3B8';
 const successColor = '#22C55E';
 const failureColor = '#EF4444';
@@ -148,7 +148,7 @@ export default function TestCaseViewModal({ isOpen, testCase, onClose, onEdit })
       <div className="fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-6 lg:p-8 overflow-y-auto"
         style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
         <div className="w-full rounded-2xl shadow-2xl flex flex-col overflow-hidden my-4 lg:my-8"
-          style={{ maxWidth: '1400px', maxHeight: '90vh', background: '#0B1220', border: `1px solid ${borderColor}` }}
+          style={{ maxWidth: '1400px', maxHeight: '90vh', background: '#0B1020', border: `1px solid ${borderColor}` }}
           onClick={e => e.stopPropagation()}>
           <div className="shrink-0 px-6 sm:px-8 lg:px-10 py-5 border-b flex items-start justify-between gap-4"
             style={{ background: surfaceBg, borderColor }}>

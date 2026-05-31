@@ -24,7 +24,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
     >
       <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700">
         {!collapsed && (
-          <span className="font-bold text-lg text-indigo-600 dark:text-indigo-400 whitespace-nowrap">
+          <span className="font-bold text-lg bg-gradient-to-r from-gray-900 via-indigo-600 to-gold dark:from-gray-100 dark:via-indigo-400 dark:to-gold bg-clip-text text-transparent whitespace-nowrap">
             QA Studio
           </span>
         )}
@@ -42,9 +42,9 @@ export default function Sidebar({ collapsed, setCollapsed }) {
             to={item.to}
             end={item.to === '/'}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+              `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
                 isActive
-                  ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400'
+                  ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 shadow-[inset_2px_0_0_0_#D4AF37]'
                   : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
               }`
             }
