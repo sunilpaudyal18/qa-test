@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  LayoutDashboard, FolderKanban, TestTube2, Beaker, BarChart3,
+  LayoutDashboard, FolderKanban, TestTube2, Globe, BarChart3,
   Upload, Settings, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 
@@ -9,7 +9,7 @@ const menuItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/projects', icon: FolderKanban, label: 'Projects' },
   { to: '/testcases', icon: TestTube2, label: 'Test Cases' },
-  { to: '/suites', icon: Beaker, label: 'Test Suites' },
+  { to: '/apihub', icon: Globe, label: 'API Hub' },
   { to: '/reports', icon: BarChart3, label: 'Reports' },
   { to: '/import-export', icon: Upload, label: 'Import / Export' },
   { to: '/settings', icon: Settings, label: 'Settings' },

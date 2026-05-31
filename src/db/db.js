@@ -1,12 +1,16 @@
 import Dexie from 'dexie';
 
-const db = new Dexie('qa_test_case_studio');
+export const db = new Dexie('QAToolDB');
 
 db.version(1).stores({
-  projects: '++id, name, createdAt',
-  testCases: '++id, projectId, suiteId, tcId, title, module, priority, severity, status, tags, createdAt',
-  testSuites: '++id, projectId, name, createdAt',
-  settings: '++id, theme, lastBackupDate',
+  testCases: '++id, projectName, testId, module, status, priority',
+  projects: '++id, &name',
+});
+
+db.version(2).stores({
+  testCases: '++id, projectName, testId, module, status, priority',
+  projects: '++id, &name',
+  apiRequests: '++id, name, method, collection, createdAt',
 });
 
 export default db;

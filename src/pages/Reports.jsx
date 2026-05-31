@@ -92,8 +92,8 @@ export default function Reports() {
       const pass = tc.filter(t => t.status === 'Pass').length;
       const fail = tc.filter(t => t.status === 'Fail').length;
       const blocked = tc.filter(t => t.status === 'Blocked').length;
-      const notExecuted = tc.filter(t => !t.status || t.status === 'Not Executed').length;
-      setStats({ projects, total: tc.length, pass, fail, blocked, notExecuted });
+      const untested = tc.filter(t => !t.status || t.status === 'Untested').length;
+      setStats({ projects, total: tc.length, pass, fail, blocked, notExecuted: untested });
     }
     load();
   }, []);

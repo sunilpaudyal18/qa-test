@@ -3,13 +3,13 @@ import db from '../db/db';
 export async function createBackup() {
   const projects = await db.projects.toArray();
   const testCases = await db.testCases.toArray();
-  const testSuites = await db.testSuites.toArray();
-  const settings = await db.settings.toArray();
+  let apiRequests = [];
+  try { apiRequests = await db.apiRequests.toArray(); } catch {}
 
   const backup = {
-    version: 1,
+    version: 2,
     createdAt: new Date().toISOString(),
-    data: { projects, testCases, testSuites, settings },
+    data: { projects, testCases, apiRequests },
   };
 
   const date = new Date().toISOString().split('T')[0];
@@ -32,16 +32,16 @@ export async function restoreBackup(file) {
     throw new Error('Invalid backup file');
   }
 
-  await db.transaction('rw', db.projects, db.testCases, db.testSuites, db.settings, async () => {
-    await db.projects.clear();
-    await db.testCases.clear();
-    await db.testSuites.clear();
-    await db.settings.clear();
+  const tables = [db.projects, db.testCases];
+  const tablesToClear = [db.projects, db.testCases];
+  if (backup.data.apiRequests) { tables.push(db.apiRequests); tablesToClear.push(db.apiRequests); }
+
+  await db.transaction('rw', ...tables, async () => {
+    for (const t of tablesToClear) await t.clear();
 
     if (backup.data.projects?.length) await db.projects.bulkAdd(backup.data.projects);
     if (backup.data.testCases?.length) await db.testCases.bulkAdd(backup.data.testCases);
-    if (backup.data.testSuites?.length) await db.testSuites.bulkAdd(backup.data.testSuites);
-    if (backup.data.settings?.length) await db.settings.bulkAdd(backup.data.settings);
+    if (backup.data.apiRequests?.length) await db.apiRequests.bulkAdd(backup.data.apiRequests);
   });
 
   return backup;

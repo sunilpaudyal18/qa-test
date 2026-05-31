@@ -38,10 +38,10 @@ export default function Projects() {
       return;
     }
     if (editing) {
-      await projectService.update(editing, form);
+      await projectService.update(editing, { name: form.name });
       toast.success('Project updated');
     } else {
-      await projectService.create(form);
+      await projectService.create(form.name);
       toast.success('Project created');
     }
     setModalOpen(false);

@@ -9,7 +9,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg'],
+      includeAssets: ['favicon/**/*', 'logo1/**/*'],
       manifest: {
         name: 'QA Test Case Studio',
         short_name: 'QA Studio',
@@ -21,14 +21,27 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: '/favicon.svg',
-            sizes: '192x192',
-            type: 'image/svg+xml',
+            src: '/favicon/convertico-favicon_128x128.png',
+            sizes: '128x128',
+            type: 'image/png',
+          },
+          {
+            src: '/favicon/convertico-favicon_256x256.png',
+            sizes: '256x256',
+            type: 'image/png',
+          },
+          {
+            src: '/logo1/convertico-favicon_256x256.png',
+            sizes: '256x256',
+            type: 'image/png',
+            purpose: 'maskable',
           },
         ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,json}'],
+        navigateFallback: '/',
+        navigateFallbackAllowlist: [/^\/[^_]*$/],
         runtimeCaching: [
           {
             urlPattern: /^https?:\/\/.*/,

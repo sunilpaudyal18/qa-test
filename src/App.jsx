@@ -6,7 +6,7 @@ import './App.css';
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Projects = lazy(() => import('./pages/Projects'));
 const TestCases = lazy(() => import('./pages/TestCases'));
-const TestSuites = lazy(() => import('./pages/TestSuites'));
+const ApiHub = lazy(() => import('./pages/ApiHub'));
 const Reports = lazy(() => import('./pages/Reports'));
 const ImportExport = lazy(() => import('./pages/ImportExport'));
 const Settings = lazy(() => import('./pages/Settings'));
@@ -19,7 +19,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/testcases" element={<TestCases />} />
-          <Route path="/suites" element={<TestSuites />} />
+          <Route path="/apihub" element={<ApiHub />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/import-export" element={<ImportExport />} />
           <Route path="/settings" element={<Settings />} />

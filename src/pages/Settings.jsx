@@ -8,17 +8,16 @@ import { createBackup, restoreBackup } from '../utils/backup';
 export default function Settings() {
   const { theme, toggleTheme } = useTheme();
   const toast = useToast();
-  const [dbStats, setDbStats] = useState({ projects: 0, testCases: 0, suites: 0 });
+  const [dbStats, setDbStats] = useState({ projects: 0, testCases: 0 });
 
   useEffect(() => {
     async function load() {
       const db = (await import('../db/db')).default;
-      const [projects, testCases, suites] = await Promise.all([
+      const [projects, testCases] = await Promise.all([
         db.projects.count(),
         db.testCases.count(),
-        db.testSuites.count(),
       ]);
-      setDbStats({ projects, testCases, suites });
+      setDbStats({ projects, testCases });
     }
     load();
   }, []);
@@ -103,7 +102,7 @@ export default function Settings() {
             </div>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Data Management</h2>
           </div>
-          <div className="grid grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 text-center">
               <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{dbStats.projects}</p>
               <p className="text-xs text-gray-500">Projects</p>
@@ -112,10 +111,7 @@ export default function Settings() {
               <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{dbStats.testCases}</p>
               <p className="text-xs text-gray-500">Test Cases</p>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 text-center">
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{dbStats.suites}</p>
-              <p className="text-xs text-gray-500">Suites</p>
-            </div>
+
           </div>
           <div className="flex flex-wrap gap-2">
             <button onClick={handleBackup} className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">

@@ -15,10 +15,10 @@ export default function ImportExport() {
   const importRef = useRef();
   const toast = useToast();
 
-  const loadProjectData = async (projectId) => {
-    setSelectedProject(projectId);
-    if (projectId) {
-      const tc = await testCaseService.getByProject(projectId);
+  const loadProjectData = async (projectName) => {
+    setSelectedProject(projectName);
+    if (projectName) {
+      const tc = await testCaseService.getAll(projectName);
       setSelectedTCs(tc);
     } else {
       const all = await testCaseService.getAll();
@@ -39,8 +39,8 @@ export default function ImportExport() {
 
   const handleExportProject = async () => {
     if (!selectedProject) { toast.warning('Please select a project'); return; }
-    const project = await projectService.getById(selectedProject);
-    const tcs = await testCaseService.getByProject(selectedProject);
+    const project = await projectService.getByName(selectedProject);
+    const tcs = await testCaseService.getAll(selectedProject);
     if (tcs.length === 0) { toast.warning('No test cases in this project'); return; }
     await exportToExcel(project, tcs);
     toast.success('Project test cases exported');
@@ -48,7 +48,7 @@ export default function ImportExport() {
 
   const handleExportFiltered = async () => {
     if (selectedTCs.length === 0) { toast.warning('No test cases to export'); return; }
-    const project = selectedProject ? await projectService.getById(selectedProject) : null;
+    const project = selectedProject ? await projectService.getByName(selectedProject) : null;
     await exportToExcel(project, selectedTCs);
     toast.success('Exported successfully');
   };
@@ -99,7 +99,7 @@ export default function ImportExport() {
                 className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-gray-200"
               >
                 <option value="">All Projects</option>
-                {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                {projects.map(p => <option key={p.name} value={p.name}>{p.name}</option>)}
               </select>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -181,7 +181,7 @@ export default function ImportExport() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-700">
-                {['TC ID', 'Title', 'Module', 'Priority', 'Severity', 'Preconditions', 'Steps', 'Expected Result', 'Actual Result', 'Status', 'Tags'].map(col => (
+                {['TC ID', 'Title', 'Module', 'Priority', 'Severity', 'Steps', 'Test Data', 'Expected Result', 'Actual Result', 'Status', 'Bug Link'].map(col => (
                   <th key={col} className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{col}</th>
                 ))}
               </tr>
@@ -193,12 +193,12 @@ export default function ImportExport() {
                 <td className="px-3 py-2">Auth</td>
                 <td className="px-3 py-2">High</td>
                 <td className="px-3 py-2">Critical</td>
-                <td className="px-3 py-2">User exists</td>
                 <td className="px-3 py-2 text-xs">1: Enter credentials</td>
+                <td className="px-3 py-2">user:admin, pass:123</td>
                 <td className="px-3 py-2">Dashboard shown</td>
                 <td className="px-3 py-2">Dashboard shown</td>
                 <td className="px-3 py-2">Pass</td>
-                <td className="px-3 py-2">Smoke, UI</td>
+                <td className="px-3 py-2">PROJ-102</td>
               </tr>
             </tbody>
           </table>
