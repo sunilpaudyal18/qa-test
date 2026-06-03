@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-gray-50: #F8FAFC;
+  --color-gray-100: #F1F5F9;
+  --color-gray-200: #E2E8F0;
+  --color-gray-300: #CBD5E1;
+  --color-gray-400: #94A3B8;
+  --color-gray-500: #64748B;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1E293B;
+  --color-gray-900: #0F172A;
+  --color-gray-950: #020617;
+}
+
+:root {
+  --color-bg: #F6F8FA;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F1F5F9;
+  --color-sidebar: #FFFFFF;
+  --color-sidebar-item-hover: #F1F5F9;
+  --color-sidebar-item-active: #EFF6FF;
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94A3B8;
+  --color-border: #E2E8F0;
+  --color-border-strong: #CBD5E1;
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-primary-subtle: #DBEAFE;
+  --color-pass: #16A34A;
+  --color-fail: #DC2626;
+  --color-blocked: #D97706;
+  --color-untested: #6B7280;
+  --color-critical: #DC2626;
+  --color-major: #EA580C;
+  --color-minor: #2563EB;
+  --color-info: #0891B2;
+  color-scheme: light;
+}
+
+.dark {
+  --color-bg: #0A0E17;
+  --color-surface: #111B2E;
+  --color-surface-alt: #1A2236;
+  --color-sidebar: #0F1629;
+  --color-sidebar-item-hover: #1A2236;
+  --color-sidebar-item-active: #1E293B;
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+  --color-border: #1E293B;
+  --color-border-strong: #334155;
+  --color-primary: #3B82F6;
+  --color-primary-hover: #60A5FA;
+  --color-primary-subtle: #1E3A5F;
+  --color-pass: #22C55E;
+  --color-fail: #EF4444;
+  --color-blocked: #F59E0B;
+  --color-untested: #9CA3AF;
+  --color-critical: #EF4444;
+  --color-major: #F97316;
+  --color-minor: #60A5FA;
+  --color-info: #22D3EE;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn { animation: fadeIn 0.2s ease-out; }
