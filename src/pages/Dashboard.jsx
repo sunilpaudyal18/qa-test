@@ -153,7 +153,7 @@ export default function Dashboard() {
             <ShieldCheck size={20} />
           </div>
           <div>
-            <h2 className="text-xs font-bold" style={{ color: 'var(--color-text-primary)' }}>QA Workstation Sandboxed Sandbox</h2>
+            <h2 className="text-xs font-bold" style={{ color: 'var(--color-text-primary)' }}>QA Workstation</h2>
             <p className="text-[10px] mt-0.5" style={{ color: 'var(--color-text-secondary)' }}>
               100% Offline, instant execution, zero cloud dependencies. Your data stays completely inside IndexedDB.
             </p>
@@ -162,18 +162,18 @@ export default function Dashboard() {
         <span className="text-[9px] font-bold px-2 py-1 rounded bg-indigo-600 text-white select-none shrink-0">PRIVACY SECURED</span>
       </motion.div>
 
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-between items-center">
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Dashboard</h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>Overview of your workstation QA testing activities</p>
+          <h1 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Dashboard</h1>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>Overview of your workstation QA testing activities</p>
         </div>
-        <div className="text-right p-3 rounded-lg border text-xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+        <div className="text-right p-3 rounded-lg border text-xs w-full sm:w-auto" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
           <p className="text-[10px] text-neutral-400 font-semibold uppercase">Global Health</p>
           <p className="text-base font-bold text-green-500">{stats.avgHealth}% Stable</p>
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7 gap-3">
         <StatCard icon={FolderKanban} label="Projects" value={stats.projects} color={iconColors.Projects} />
         <StatCard icon={TestTube2} label="Total Cases" value={stats.total} color={iconColors['Total Cases']} subtitle={`${stats.highPriority} high priority`} />
         <StatCard icon={CheckCircle2} label="Pass" value={stats.pass} color={iconColors.Pass} subtitle={`${passRate}% pass rate`} />

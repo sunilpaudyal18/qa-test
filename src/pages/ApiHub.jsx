@@ -121,89 +121,90 @@ export default function ApiHub() {
   return (
     <div 
       className="-mx-4 lg:-mx-6 -mt-4 lg:-mt-6 border-b flex flex-col overflow-hidden bg-neutral-50 dark:bg-neutral-900 select-none"
-      style={{ height: 'calc(100vh - 170px)', minHeight: '520px' }}
+      style={{ height: 'calc(100vh - 170px)', minHeight: '400px' }}
     >
       {/* Top Application Ribbon */}
       <div 
-        className="flex items-center justify-between px-4 py-2 border-b bg-white dark:bg-neutral-950 flex-shrink-0"
+        className="flex items-center justify-between px-3 sm:px-4 py-2 border-b bg-white dark:bg-neutral-950 flex-shrink-0"
         style={{ borderColor: 'var(--color-border)' }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <button 
             onClick={() => setLeftSidebarCollapsed(!leftSidebarCollapsed)}
-            className="p-1.5 rounded-lg border hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            className="p-1.5 rounded-lg border hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors shrink-0"
             style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-secondary)' }}
             title="Toggle sidebar"
           >
             <SidebarIcon size={14} />
           </button>
           
-          <div>
-            <h1 className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5" style={{ color: 'var(--color-text-primary)' }}>
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-              API testing studio
+          <div className="min-w-0">
+            <h1 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider flex items-center gap-1.5" style={{ color: 'var(--color-text-primary)' }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0" />
+              <span className="truncate">API testing studio</span>
             </h1>
-            <p className="text-[9px]" style={{ color: 'var(--color-text-muted)' }}>Offline sandbox & client validation</p>
+            <p className="text-[8px] sm:text-[9px] truncate" style={{ color: 'var(--color-text-muted)' }}>Offline API testing & client validation</p>
           </div>
         </div>
 
         {/* Feature Switches & Modals Buttons */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1">
           {/* Learning Mode Toggle */}
           <button
             onClick={() => setLearningMode(!learningMode)}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-semibold border transition-all"
+            className="flex items-center gap-1 px-1.5 sm:px-2.5 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-semibold border transition-all"
             style={{
               background: learningMode ? '#eff6ff' : 'transparent',
               borderColor: learningMode ? '#bfdbfe' : 'var(--color-border)',
               color: learningMode ? '#1d4ed8' : 'var(--color-text-secondary)',
             }}
           >
-            <BookOpen size={12} />
-            Learning Mode
+            <BookOpen size={11} />
+            <span className="hidden sm:inline">Learning</span>
           </button>
 
           {/* Load Test */}
           <button
             onClick={() => setShowLoadTest(true)}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-semibold border hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+            className="flex items-center gap-1 px-1.5 sm:px-2.5 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-semibold border hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
             style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-secondary)' }}
           >
-            <Activity size={12} className="text-red-500" />
-            Load Test
+            <Activity size={11} className="text-red-500" />
+            <span className="hidden sm:inline">Load Test</span>
           </button>
 
           {/* Mock Server */}
           <button
             onClick={() => setShowMockServer(true)}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-semibold border hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+            className="flex items-center gap-1 px-1.5 sm:px-2.5 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-semibold border hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
             style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-secondary)' }}
           >
-            <Settings size={12} className="text-orange-500" />
-            Mock Server
+            <Settings size={11} className="text-orange-500" />
+            <span className="hidden sm:inline">Mock Server</span>
           </button>
 
           {/* AI Assistant */}
           <button
             onClick={() => setShowAiAssistant(!showAiAssistant)}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-semibold border hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+            className="flex items-center gap-1 px-1.5 sm:px-2.5 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-semibold border transition-all"
             style={{
               borderColor: showAiAssistant ? 'var(--color-primary)' : 'var(--color-border)',
               color: showAiAssistant ? 'var(--color-primary)' : 'var(--color-text-secondary)',
               background: showAiAssistant ? 'var(--color-surface-alt)' : 'transparent',
             }}
           >
-            <Sparkles size={12} className="text-indigo-500 fill-indigo-200" />
-            AI Helper
+            <Sparkles size={11} className="text-indigo-500 fill-indigo-200" />
+            <span className="hidden sm:inline">AI</span>
           </button>
+          <div className="w-px h-5 bg-neutral-200 dark:bg-neutral-700 sm:hidden" />
         </div>
       </div>
 
       {/* Main 3-panel Work Area */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         {/* Panel 1: Left Sidebar */}
         {!leftSidebarCollapsed && (
-          <div className="w-72 shrink-0 h-full flex flex-col border-r" style={{ borderColor: 'var(--color-border)' }}>
+          <div className="w-full lg:w-72 shrink-0 h-auto lg:h-full flex flex-col border-b lg:border-b-0 lg:border-r max-h-40 lg:max-h-none overflow-y-auto" style={{ borderColor: 'var(--color-border)' }}>
             <LeftSidebar 
               store={store} 
               onNewCollection={() => {}} 
@@ -214,7 +215,7 @@ export default function ApiHub() {
         )}
 
         {/* Panel 2: Center Workspace (HTTP requests builder) */}
-        <div className="flex-1 h-full overflow-hidden border-r" style={{ borderColor: 'var(--color-border)' }}>
+        <div className="flex-1 h-1/2 lg:h-full overflow-hidden border-b lg:border-b-0 lg:border-r" style={{ borderColor: 'var(--color-border)' }}>
           <WorkspaceCenter 
             store={store} 
             onSave={handleOpenSaveModal} 
@@ -223,7 +224,7 @@ export default function ApiHub() {
         </div>
 
         {/* Panel 3: Response Panel (renders fetch results) */}
-        <div className="flex-1 h-full overflow-hidden">
+        <div className="flex-1 h-1/2 lg:h-full overflow-hidden">
           <ResponsePanel 
             store={store} 
             onExtractVarClick={() => setShowExtractModal(true)} 

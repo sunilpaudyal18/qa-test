@@ -205,16 +205,16 @@ export default function Reports() {
   return (
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>
+        <h1 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>
           Reports &amp; Risk Analytics
         </h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>
+        <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>
           Quality health dashboards, trends, and risk analysis across all projects
         </p>
       </motion.div>
 
       {/* KPI strip */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
         {[
           { label: 'Pass Rate',     value: `${stats.passRate}%`, color: stats.passRate >= 80 ? 'var(--color-pass)' : 'var(--color-blocked)' },
           { label: 'Total Cases',   value: stats.total,          color: 'var(--color-text-primary)' },

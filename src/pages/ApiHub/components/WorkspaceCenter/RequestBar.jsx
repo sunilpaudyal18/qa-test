@@ -29,7 +29,7 @@ export default function RequestBar({ store, onSave, toast }) {
     <div className="flex flex-col gap-2">
       {/* Method + URL Row */}
       <div
-        className="flex items-center gap-2 p-2 rounded-xl"
+        className="flex flex-wrap items-stretch gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-xl"
         style={{
           background: 'var(--color-surface)',
           border: '1px solid var(--color-border)',
@@ -40,16 +40,16 @@ export default function RequestBar({ store, onSave, toast }) {
         <div className="relative">
           <button
             onClick={() => setShowMethodMenu(v => !v)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all"
+            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all"
             style={{
               background: METHOD_COLORS[method] + '20',
               color: METHOD_COLORS[method],
               border: `1.5px solid ${METHOD_COLORS[method]}40`,
-              minWidth: 80,
+              minWidth: 68,
             }}
           >
             <span className="flex-1 text-center">{method}</span>
-            <ChevronDown size={12} />
+            <ChevronDown size={10} />
           </button>
           {showMethodMenu && (
             <>
@@ -87,7 +87,7 @@ export default function RequestBar({ store, onSave, toast }) {
         </div>
 
         {/* URL Input */}
-        <div className="flex-1 relative">
+        <div className="flex-1 relative min-w-[120px]">
           <input
             ref={urlRef}
             type="text"
@@ -95,13 +95,13 @@ export default function RequestBar({ store, onSave, toast }) {
             onChange={e => setUrl(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="https://api.example.com/endpoint  or  {{baseUrl}}/users"
-            className="w-full px-3 py-2 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 transition-all"
+            className="w-full px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-mono focus:outline-none focus:ring-2 transition-all"
             style={{
               background: 'var(--color-surface-alt)',
               border: '1px solid var(--color-border)',
               color: 'var(--color-text-primary)',
               fontFamily: 'ui-monospace, monospace',
-              fontSize: '13px',
+              fontSize: '12px',
             }}
             aria-label="Request URL"
           />
@@ -116,41 +116,44 @@ export default function RequestBar({ store, onSave, toast }) {
           )}
         </div>
 
-        {/* Send / Cancel Button */}
-        {sending ? (
-          <button
-            onClick={cancelRequest}
-            className="flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold text-white transition-all"
-            style={{ background: '#DC2626', minWidth: 100 }}
-          >
-            <X size={14} />
-            Cancel
-          </button>
-        ) : (
-          <button
-            onClick={() => handleSend(toast)}
-            className="flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
-            style={{ background: 'var(--color-primary)', minWidth: 100 }}
-          >
-            <Send size={14} />
-            Send
-          </button>
-        )}
+        {/* Action buttons group */}
+        <div className="flex items-stretch gap-1.5 sm:gap-2">
+          {/* Send / Cancel Button */}
+          {sending ? (
+            <button
+              onClick={cancelRequest}
+              className="flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-sm font-semibold text-white transition-all shrink-0"
+              style={{ background: '#DC2626' }}
+            >
+              <X size={12} />
+              <span className="hidden xs:inline">Cancel</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => handleSend(toast)}
+              className="flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95 shrink-0"
+              style={{ background: 'var(--color-primary)' }}
+            >
+              <Send size={12} />
+              <span className="hidden xs:inline">Send</span>
+            </button>
+          )}
 
-        {/* Save Button */}
-        <button
-          onClick={onSave}
-          title="Save Request"
-          className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all"
-          style={{
-            background: 'var(--color-surface-alt)',
-            border: '1px solid var(--color-border)',
-            color: 'var(--color-text-secondary)',
-          }}
-        >
-          <Save size={14} />
-          Save
-        </button>
+          {/* Save Button */}
+          <button
+            onClick={onSave}
+            title="Save Request"
+            className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-medium transition-all shrink-0"
+            style={{
+              background: 'var(--color-surface-alt)',
+              border: '1px solid var(--color-border)',
+              color: 'var(--color-text-secondary)',
+            }}
+          >
+            <Save size={12} />
+            <span className="hidden xs:inline">Save</span>
+          </button>
+        </div>
       </div>
 
       {/* Resolved URL Preview (when vars present) */}

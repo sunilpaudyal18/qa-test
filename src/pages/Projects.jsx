@@ -92,10 +92,10 @@ export default function Projects() {
       {/* Upper header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>
+          <h1 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>
             {showArchived ? 'Archived Projects' : 'Projects'}
           </h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>
             {showArchived ? 'Archived sandboxes' : 'Manage your live workstation testing projects'}
           </p>
         </div>

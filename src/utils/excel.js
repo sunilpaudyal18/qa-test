@@ -1,7 +1,6 @@
 import * as XLSX from 'xlsx-js-style';
 import { saveAs } from 'file-saver';
 import { format } from 'date-fns';
-import db from '../db/db';
 
 const formatSteps = (value) => {
   if (Array.isArray(value)) {
@@ -166,7 +165,8 @@ const buildWorksheet = (testCases) => {
   return ws;
 };
 
-export const exportToExcel = (testCases) => {
+export const exportToExcel = (projectOrCases, cases) => {
+  const testCases = cases || projectOrCases;
   if (!testCases || testCases.length === 0) return;
   const ws = buildWorksheet(testCases);
   const wb = XLSX.utils.book_new();
@@ -175,18 +175,19 @@ export const exportToExcel = (testCases) => {
   saveAs(new Blob([buffer]), `QA_Test_Cases_${format(new Date(), 'yyyy-MM-dd_HH-mm')}.xlsx`);
 };
 
-export const importFromExcel = async (file) => {
+export const importFromExcel = async (file, dryRun) => {
   const data = await file.arrayBuffer();
   const wb = XLSX.read(data, { type: 'array', cellStyles: true });
   const ws = wb.Sheets[wb.SheetNames[0]];
   const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
-  let success = 0;
+  const parsed = [];
   const errors = [];
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
     try {
       if (!row['Title'] && !row['Test ID']) continue;
       const tc = {
+        projectName: (row['Project Name'] || row['Project'] || '').toString(),
         testId: (row['Test ID'] || row['TC ID'] || '').toString(),
         module: (row['Module'] || '').toString(),
         title: (row['Title'] || '').toString(),
@@ -201,17 +202,12 @@ export const importFromExcel = async (file) => {
         date: row['Date Executed'] ? format(new Date(row['Date Executed']), 'yyyy-MM-dd') : '',
         screenshot: null,
       };
-      await db.testCases.add({
-        ...tc,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      });
-      success++;
+      parsed.push(tc);
     } catch (err) {
       errors.push({ row: i + 2, message: err.message });
     }
   }
-  return { success, errors };
+  return { success: true, data: parsed, errors };
 };
 
 export const exportSingleToExcel = (testCase) => {

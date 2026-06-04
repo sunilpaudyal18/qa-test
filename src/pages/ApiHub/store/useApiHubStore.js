@@ -79,7 +79,9 @@ export function useApiHubStore() {
   // ── UI state ──────────────────────────────────────────────────
   const [learningMode, setLearningMode] = useState(false);
   const [aiPanelOpen, setAiPanelOpen] = useState(false);
-  const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(false);
+  const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(() => {
+    try { return window.innerWidth < 1024; } catch { return false; }
+  });
   const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeLeftTab, setActiveLeftTab] = useState('collections');

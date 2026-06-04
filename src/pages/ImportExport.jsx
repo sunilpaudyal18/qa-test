@@ -4,6 +4,7 @@ import { Upload, FileSpreadsheet, Download, AlertCircle, CheckCircle2, FileText,
 import { projectService } from '../services/projectService';
 import { testCaseService } from '../services/testCaseService';
 import { exportToExcel, importFromExcel } from '../utils/excel';
+import db from '../db/db';
 import { useToast } from '../contexts/ToastContext';
 import Modal from '../components/ui/Modal';
 
@@ -298,8 +299,8 @@ export default function ImportExport() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Import / Export</h1>
-        <p className="text-sm mt-1 mb-6" style={{ color: 'var(--color-text-secondary)' }}>Export test cases or import them with full validation previews</p>
+        <h1 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Import / Export</h1>
+        <p className="text-xs sm:text-sm mt-1 mb-6" style={{ color: 'var(--color-text-secondary)' }}>Export test cases or import them with full validation previews</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -333,15 +334,15 @@ export default function ImportExport() {
 
             <div className="p-3 border rounded-xl space-y-2.5" style={{ borderColor: 'var(--color-border)' }}>
               <p className="text-[10px] font-bold uppercase text-neutral-400">Export filtered project cases</p>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <select value={selectedProject} onChange={e => loadProjectData(e.target.value)}
-                  className="flex-1 px-3 py-1.5 rounded-lg text-xs focus:outline-none"
+                  className="w-full sm:flex-1 px-3 py-1.5 rounded-lg text-xs focus:outline-none"
                   style={{ background: 'var(--color-surface-alt)', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)' }}>
                   <option value="">All Projects</option>
                   {projects.map(p => <option key={p.name} value={p.name}>{p.name}</option>)}
                 </select>
                 <button onClick={handleExportProject} disabled={!selectedProject}
-                  className="px-4 py-1.5 rounded-lg text-xs font-semibold text-white transition-colors disabled:opacity-40"
+                  className="w-full sm:w-auto px-4 py-1.5 rounded-lg text-xs font-semibold text-white transition-colors disabled:opacity-40"
                   style={{ background: 'var(--color-primary)' }}>
                   Export Excel
                 </button>
@@ -372,7 +373,7 @@ export default function ImportExport() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div
               className="rounded-xl border-2 border-dashed p-5 text-center cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900"
               style={{ borderColor: 'var(--color-border)', background: 'var(--color-surface-alt)' }}

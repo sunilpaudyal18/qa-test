@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
 
-export default function Modal({ isOpen, onClose, title, children, size = 'md' }) {
+export default function Modal({ isOpen, onClose, title, children, size = 'md', zIndex = 100 }) {
   if (!isOpen) return null;
 
   const sizes = {
@@ -17,7 +17,8 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' })
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+      className="fixed inset-0 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+      style={{ zIndex }}
       onClick={onClose}
     >
       <motion.div

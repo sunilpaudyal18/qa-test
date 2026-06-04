@@ -271,12 +271,12 @@ export default function TestCases() {
       {/* Top Header Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Test Cases</h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>{filtered.length} test cases in <strong style={{ color: 'var(--color-text-primary)' }}>{activeProject}</strong></p>
+          <h1 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Test Cases</h1>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>{filtered.length} test cases in <strong style={{ color: 'var(--color-text-primary)' }}>{activeProject}</strong></p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <select value={activeProject} onChange={e => { if (e.target.value === '__add__') handleCreateProject(); else setActiveProject(e.target.value); }}
-            className="px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2"
+            className="px-3 py-2 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 max-w-[140px] sm:max-w-none"
             style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-strong)', color: 'var(--color-text-primary)' }}>
             {projects.map(p => <option key={p.name} value={p.name}>{p.name}</option>)}
             <option value="__add__" style={{ color: 'var(--color-primary)' }}>+ New Project</option>
@@ -296,12 +296,13 @@ export default function TestCases() {
               style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-secondary)', background: 'var(--color-surface)' }}
             >
               <Sparkles size={13} className="text-indigo-500" />
-              Templates
+              <span className="hidden sm:inline">Templates</span>
+              <span className="sm:hidden">Tmp</span>
             </button>
             {showTemplatesDropdown && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setShowTemplatesDropdown(false)} />
-                <div className="absolute right-0 top-full mt-1.5 w-56 rounded-xl border shadow-2xl z-20 p-1 space-y-0.5 overflow-hidden"
+                <div className="absolute right-0 top-full mt-1.5 w-48 sm:w-56 rounded-xl border shadow-2xl z-20 p-1 space-y-0.5 overflow-hidden"
                   style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
                   {TEMPLATES.map(t => (
                     <button
@@ -319,38 +320,38 @@ export default function TestCases() {
           </div>
 
           <button onClick={() => { setEditingCase(null); setFormOpen(true); }}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-white transition-colors"
             style={{ background: 'var(--color-primary)' }}>
-            <Plus size={16} /> New Case
+            <Plus size={16} /> <span className="hidden sm:inline">New Case</span><span className="sm:hidden">New</span>
           </button>
         </div>
       </div>
 
       {/* Main Table Area */}
       <div className="rounded-xl overflow-hidden" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
-        <div className="p-4 flex flex-col md:flex-row gap-3" style={{ borderBottom: '1px solid var(--color-border)' }}>
-          <div className="relative flex-1">
+        <div className="p-3 sm:p-4 flex flex-col sm:flex-row gap-3" style={{ borderBottom: '1px solid var(--color-border)' }}>
+          <div className="relative flex-1 min-w-0">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--color-text-muted)' }} />
-            <input type="text" placeholder="Search by title, module, or ID..." value={search}
+            <input type="text" placeholder="Search..." value={search}
               onChange={e => setSearch(e.target.value)}
               className="w-full pl-9 pr-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2"
               style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-strong)', color: 'var(--color-text-primary)' }} />
           </div>
           <div className="flex gap-2 flex-wrap">
             <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
-              className="px-3 py-2 rounded-lg text-xs font-semibold border"
+              className="px-2 sm:px-3 py-2 rounded-lg text-xs font-semibold border"
               style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text-primary)' }}>
               <option value="All">All Status</option>
               {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
             <select value={priorityFilter} onChange={e => setPriorityFilter(e.target.value)}
-              className="px-3 py-2 rounded-lg text-xs font-semibold border"
+              className="px-2 sm:px-3 py-2 rounded-lg text-xs font-semibold border"
               style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text-primary)' }}>
               <option value="All">All Priority</option>
               {PRIORITIES.map(p => <option key={p} value={p}>{p}</option>)}
             </select>
             <select value={tagFilter} onChange={e => setTagFilter(e.target.value)}
-              className="px-3 py-2 rounded-lg text-xs font-semibold border"
+              className="px-2 sm:px-3 py-2 rounded-lg text-xs font-semibold border"
               style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text-primary)' }}>
               <option value="All">All Tags</option>
               {TAGS.map(t => <option key={t} value={t}>{t}</option>)}
@@ -483,7 +484,7 @@ export default function TestCases() {
       </div>
 
       {/* AI Simulation Output modal */}
-      <Modal isOpen={aiModalOpen} onClose={() => setAiModalOpen(false)} title={`AI Generation: ${aiContext === 'testcase' ? 'Test Cases' : 'Negative Scenarios'}`} size="md">
+      <Modal isOpen={aiModalOpen} onClose={() => setAiModalOpen(false)} title={`AI Generation: ${aiContext === 'testcase' ? 'Test Cases' : 'Negative Scenarios'}`} size="md" zIndex={200}>
         <div className="space-y-4">
           <div className="flex items-center gap-2 p-3 bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg text-purple-700 dark:text-purple-300">
             <Sparkles size={16} className="shrink-0" />

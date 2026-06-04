@@ -37,7 +37,7 @@ export default function WorkspaceCenter({ store, onSave, toast }) {
 
       {/* Tabs navigation row */}
       <div 
-        className="flex items-center px-4 border-b bg-neutral-50 dark:bg-neutral-900 flex-shrink-0"
+        className="flex items-center px-2 sm:px-4 border-b bg-neutral-50 dark:bg-neutral-900 flex-shrink-0 overflow-x-auto no-scrollbar"
         style={{ borderColor: 'var(--color-border)' }}
       >
         <div className="flex gap-1">
@@ -48,7 +48,7 @@ export default function WorkspaceCenter({ store, onSave, toast }) {
               <button
                 key={t.id}
                 onClick={() => setActiveRequestTab(t.id)}
-                className="flex items-center gap-1.5 px-3 py-2.5 text-xs font-semibold border-b-2 transition-all"
+                className="flex items-center gap-1 px-2 sm:gap-1.5 sm:px-3 py-2.5 text-[10px] sm:text-xs font-semibold border-b-2 transition-all whitespace-nowrap"
                 style={{
                   borderColor: isActive ? 'var(--color-primary)' : 'transparent',
                   color: isActive ? 'var(--color-primary)' : 'var(--color-text-secondary)',

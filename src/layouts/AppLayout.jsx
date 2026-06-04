@@ -64,8 +64,8 @@ export default function AppLayout() {
   return (
     <div className="flex flex-col min-h-screen" style={{ background: 'var(--color-bg)' }}>
       <div className="flex flex-1">
-        <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
-        <div className={`flex-1 flex flex-col transition-all duration-300 ${sidebarCollapsed ? 'ml-16' : 'ml-60'}`}>
+         <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} mobileOpen={mobileSidebarOpen} setMobileOpen={setMobileSidebarOpen} />
+        <div className={`flex-1 flex flex-col transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-60'}`}>
           <Topbar onMenuClick={() => setMobileSidebarOpen(!mobileSidebarOpen)} />
           <CommandPalette isOpen={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} />
           <main className="flex-1 p-4 lg:p-6">
@@ -97,9 +97,7 @@ export default function AppLayout() {
           </footer>
         </div>
       </div>
-      {mobileSidebarOpen && (
-        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setMobileSidebarOpen(false)} />
-      )}
+      {/* Mobile sidebar overlay is handled inside Sidebar component */}
     </div>
   );
 }
